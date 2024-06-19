@@ -1,0 +1,65 @@
+from django.contrib.auth.models import User, Group
+from api.models import Contractor, Emails, Pedidos, CargasInfo
+from rest_framework import serializers
+
+#AUTH DO DJANGO REST FRAMEWORK
+class UsersSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'username', 'email', 'groups']
+
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Group
+        fields = ['url', 'name']
+
+# SERIALIZERS
+
+class ContractorSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Contractor
+        fields = ['name', 'cnpj', 'created_at', 'open_orders', 'total_orders', 'observacoes']
+
+class EmailsSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Emails
+        fields = ['author_name', 'email', 'created_at', 'contractor']
+
+class PedidosSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Pedidos
+        fields = ['shipping_id', 'contractor_id', 'created_at', 'deadline_date', 'delivery_status', 'costs', 'faturamento', 'expected_profit']
+
+class CargasInfoSerializer(serializers.HyperlinkedModelSerializer):
+    contractorname = serializers.PrimaryKeyRelatedField(queryset=Contractor.objects.all(), write_only=True)
+    contractor_name_display = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = CargasInfo
+        fields = ['id', 'contractorname', 'contractor_name_display', 'shipping_status', 'type_of_load', 'origin', 'destination', 'weight', 'cost', 'created_at', 'ce_mercante', 'contractorstring']
+        lookup_field = 'id'
+
+    def get_contractor_name_display(self, obj):
+        return obj.contractorname.name
+    
+class StatBoxSerializer(serializers.Serializer):
+    option_l_count = serializers.SerializerMethodField()
+    option_t_count = serializers.SerializerMethodField()
+    option_b_count = serializers.SerializerMethodField()
+    option_p_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CargasInfo
+        fields = ['option_l_count', 'option_t_count', 'option_b_count', 'option_p_count']
+
+    def get_option_l_count(self, obj):
+        return CargasInfo.objects.filter(shipping_status='L').count()
+
+    def get_option_t_count(self, obj):
+        return CargasInfo.objects.filter(shipping_status='T').count()
+
+    def get_option_b_count(self, obj):
+        return CargasInfo.objects.filter(shipping_status='B').count()
+
+    def get_option_p_count(self, obj):
+        return CargasInfo.objects.filter(shipping_status='P').count()

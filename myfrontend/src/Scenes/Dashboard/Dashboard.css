@@ -1,0 +1,18 @@
+.dashboard-container {
+  background-color: #3d4855a6;
+  display: flex;
+  width: 98vw;
+  height: 15vh;
+  margin: auto;
+  border-radius: 30px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-lowcontainer {
+  background-color: #1d1d1da6;
+  display: flex;
+  width: 98vw;
+  height: 15vh;
+  border-radius: 30px;
+}

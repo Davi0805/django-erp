@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-router-dom": "^5.3.4",
+    "react-use-websocket": "^4.8.1"
+  }
+}
