@@ -37,7 +37,7 @@ const NovaCargapopup = () => {
                     const formData = new FormData(event.currentTarget);
                     const formJson = Object.fromEntries(formData.entries());
                     try {
-                        const response = await fetch('http://127.0.0.1:8000/cargasinfo/', {
+                        const response = await fetch('http://0.0.0.0:8000/cargasinfo/', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',

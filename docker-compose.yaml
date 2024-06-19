@@ -1,10 +1,6 @@
 version: '3'
 
 services:
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
 
   backend:
     build:
@@ -12,14 +8,10 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     environment:
       - DJANGO_SETTINGS_MODULE=backend.settings
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
     volumes:
       - ./mybackend:/code
     ports:
       - "8000:8000"
-    depends_on:
-      - redis
 
   frontend:
     build:
