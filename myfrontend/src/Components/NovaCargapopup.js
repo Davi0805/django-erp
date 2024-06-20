@@ -101,6 +101,7 @@ const NovaCargapopup = () => {
           event.preventDefault();
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
+          formJson.contractorname = options.findIndex((option) => option.name === formJson.contractorname);
           console.log(formJson)
           try {
             const response = await fetch('http://127.0.0.1:8000/cargasinfo/', {
