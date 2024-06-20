@@ -8,6 +8,7 @@ import Dashboard from './Scenes/Dashboard/Dashboard';
 import { LoginSignup } from './Scenes/LoginSignup/LoginSignup';
 import PrivateRoute from './PrivateRoute';
 import Pedidos from './Scenes/Pedidos/Pedidos';
+import PaginaPedidos from './Scenes/Pedidos/PaginaPedidos';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -23,7 +24,7 @@ function App() {
                 <Route path="/" element={<LoginSignup />} />
                     <Route element={<PrivateRoute />}>
                       <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/dashboard/pedidos" element={<Pedidos />} />
+                      <Route path="/dashboard/pedidos" element={<PaginaPedidos />} />
                     </Route>
               </Routes>
             </main>

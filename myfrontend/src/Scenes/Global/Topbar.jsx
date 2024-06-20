@@ -1,4 +1,4 @@
-import { Box, IconButton, MenuItem, useTheme } from '@mui/material';
+import { Box, IconButton, MenuItem, useTheme, Typography } from '@mui/material';
 import { useContext } from 'react';
 import { ColorModeContext, tokens } from '../../theme';
 import LightModeOutlined from '@mui/icons-material/LightModeOutlined';
@@ -7,6 +7,7 @@ import NotificationsOutlined from '@mui/icons-material/NotificationsOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonOutlined from '@mui/icons-material/PersonOutlined';
 import { Link, useNavigate } from 'react-router-dom'
+import axiosConfig from '../../axiosConfig';
 
 const Topbar = () => {
     const theme = useTheme();
@@ -18,7 +19,17 @@ const Topbar = () => {
     const handleLogout = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        navigate('/');}
+        navigate('/');
+    }
+
+    const excelexport = async () => {
+        try {
+          const response = await axiosConfig.get('export/');
+          const data = response.data;
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
 
     return isAuthenticated  ? 
 
@@ -28,10 +39,13 @@ const Topbar = () => {
         // boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
       }}>
         
-        <Box display="flex">
-        <MenuItem component={Link} to="/dashboard">Dashboard</MenuItem>
-        <MenuItem component={Link} to="/dashboard/pedidos">Pedidos</MenuItem>
+        <Box display="flex" alignItems="center">
+        <Typography marginTop="5px" component={Link} to="/dashboard" variant="h4" color={colors.grey[100]} fontWeight="bold" display="inline" sx={{mb: "5px", textDecoration: 'none'}}>CDZBROS</Typography>
+        {/* <MenuItem component={Link} to="/dashboard">Dashboard</MenuItem> */}
+        <Box display="flex" alignItems="center" marginLeft="5px">
+        <MenuItem component={Link} to="/dashboard/pedidos" >Cargas</MenuItem>
         <MenuItem component={Link} to="/dashboard/clientes">Clientes</MenuItem>
+        </Box>
         </Box>
         <Box display="flex">
             <IconButton onClick={colorMode.toggleColorMode}>

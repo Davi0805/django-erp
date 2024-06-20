@@ -12,11 +12,12 @@ import BlockIcon from '@mui/icons-material/Block';
 import NovaCargapopup from '../../Components/NovaCargapopup';
 import axiosConfig from '../../axiosConfig';
 import { mockTransactions } from '../../Data/mockData';
-
+import axios from 'axios';
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [excelData, setExcelData] = useState(null);
 
   const [stats, setStats] = useState({
     option_t_count: 0,
@@ -24,6 +25,46 @@ const Dashboard = () => {
     option_l_count: 0,
     option_p_count: 0,
   });
+
+  const downloadFileFromApi = async (apiUrl, fileName, fileType) => {
+    console.log('Downloading file...');
+    try {
+  
+      const response = await axiosConfig.get(apiUrl, {
+  
+        responseType: 'arraybuffer',
+  
+        headers: {
+  
+          'Content-Type': fileType,
+  
+        },
+  
+      });
+  
+  
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: fileType }));
+  
+      const link = document.createElement('a');
+  
+      link.href = url;
+  
+      link.setAttribute('download', fileName);
+  
+      document.body.appendChild(link);
+  
+      link.click();
+  
+      link.remove();
+  
+    } catch (error) {
+  
+      console.error(error);
+  
+    }
+  
+  };
+  
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -73,7 +114,7 @@ const Dashboard = () => {
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center" marginRight="25px" sx={{ gap: "20px" }}>
           <NovaCargapopup />
-          <Button sx={{ backgroundColor: colors.blueAccent[700], fontSize: "14px", fontWeight: "bold", padding: "10px 20px", alignItems: "center", display: "flex", justifyContent: "center", color: colors.grey[100] }}>
+          <Button onClick={() => downloadFileFromApi('/export/', 'ThePythonDjango.xls', 'application/ms-excel')} sx={{ backgroundColor: colors.blueAccent[700], fontSize: "14px", fontWeight: "bold", padding: "10px 20px", alignItems: "center", display: "flex", justifyContent: "center", color: colors.grey[100] }}>
             Baixar planilhas
           </Button>
         </Box>

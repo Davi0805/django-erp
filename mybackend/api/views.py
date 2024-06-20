@@ -4,7 +4,15 @@ from rest_framework.response import Response
 from api.models import Contractor, Emails, Pedidos, CargasInfo
 from api.serializers import UsersSerializer,StatBoxSerializer, GroupSerializer, PedidosSerializer, ContractorSerializer, EmailsSerializer, CargasInfoSerializer
 #from api import serializers
+from api.utils import download_excel_data
 from rest_framework_simplejwt.authentication import JWTAuthentication
+
+import pytz
+import pandas as pd
+import xlwt
+from api.models import CargasInfo
+import requests
+from django.http import HttpResponse
 
 
 # AUTH DO DJANGO REST FRAMEWORK
@@ -81,4 +89,32 @@ class StatBoxViewSet(viewsets.ViewSet):
         }
 
         return Response(response_data)
+    
+""" def export_view(request):
+
+    return download_excel_data(request) """
+def export_view(request):
+	# content-type of response
+	response = HttpResponse(content_type='application/ms-excel')	#decide file name
+	response['Content-Disposition'] = 'attachment; filename="ThePythonDjango.xls"'	#creating workbook
+	wb = xlwt.Workbook(encoding='utf-8')	#adding sheet
+	ws = wb.add_sheet("sheet1")	# Sheet header, first row
+	row_num = 0	
+	font_style = xlwt.XFStyle()
+	# headers are bold
+	font_style.font.bold = True	#column header names, you can use your own headers here
+	columns = ['Column 1', 'Column 2', 'Column 3', 'Column 4', ]	#write column headers in sheet
+	for col_num in range(len(columns)):
+		ws.write(row_num, col_num, columns[col_num], font_style)	# Sheet body, remaining rows
+	font_style = xlwt.XFStyle()	#get your data, from database or from a text file...
+	data = CargasInfo.objects.all() #dummy method to fetch data.
+	for row_num, my_row in enumerate(data):
+		row = [my_row.contractorname.name, my_row.contractorstring, my_row.shipping_status, 
+			   my_row.type_of_load, str(my_row.origin.name), str(my_row.destination.name), my_row.destination.name, my_row.weight, 
+			   my_row.cost, my_row.ce_mercante]
+		for col_num, cell_value in enumerate(row):
+			ws.write(row_num + 1, col_num, cell_value, font_style)
+	wb.save(response)
+	return response
+
 # Create your views here.
