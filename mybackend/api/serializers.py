@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from api.models import Contractor, Emails, Pedidos, CargasInfo
+from api.models import Contractor, Emails, Pedidos, CargasInfo, Country
 from rest_framework import serializers
 
 #AUTH DO DJANGO REST FRAMEWORK
@@ -18,12 +18,17 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class ContractorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Contractor
-        fields = ['name', 'cnpj', 'created_at', 'open_orders', 'total_orders', 'observacoes']
+        fields = ['id', 'name', 'cnpj', 'created_at', 'open_orders', 'total_orders', 'observacoes']
 
 class EmailsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Emails
         fields = ['author_name', 'email', 'created_at', 'contractor']
+
+class CountrySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Country
+        fields = ['id', 'name', 'iso_code']
 
 class PedidosSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -33,14 +38,19 @@ class PedidosSerializer(serializers.HyperlinkedModelSerializer):
 class CargasInfoSerializer(serializers.HyperlinkedModelSerializer):
     contractorname = serializers.PrimaryKeyRelatedField(queryset=Contractor.objects.all(), write_only=True)
     contractor_name_display = serializers.SerializerMethodField(read_only=True)
+    origin = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all(), write_only=True)
+    origin_name_display = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = CargasInfo
-        fields = ['id', 'contractorname', 'contractor_name_display', 'shipping_status', 'type_of_load', 'origin', 'destination', 'weight', 'cost', 'created_at', 'ce_mercante', 'contractorstring']
+        fields = ['id', 'contractorname', 'contractor_name_display', 'shipping_status', 'type_of_load', 'origin', 'origin_name_display', 'weight', 'cost', 'created_at', 'ce_mercante', 'contractorstring']
         lookup_field = 'id'
 
     def get_contractor_name_display(self, obj):
         return obj.contractorname.name
+
+    def get_origin_name_display(self, obj):
+        return obj.origin.name
     
 class StatBoxSerializer(serializers.Serializer):
     option_l_count = serializers.SerializerMethodField()

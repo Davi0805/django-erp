@@ -9,8 +9,7 @@ const columnscarga = [
   { field: 'contractor_name_display', headerName: 'Contratante', flex: 1.5 },
   { field: 'shipping_status', headerName: 'Status de Envio', flex: 0.6, align: 'center' },
   { field: 'type_of_load', headerName: 'Tipo de Carga', flex: 1 },
-  { field: 'origin', headerName: 'Origem', flex: 0.5, align: 'center' },
-  { field: 'destination', headerName: 'Destino', flex: 0.5, align: 'center' },
+  { field: 'origin_name_display', headerName: 'Origem', flex: 0.5, align: 'center' },
   { field: 'weight', headerName: 'Peso', type: 'number', flex: 1 },
   { field: 'cost', headerName: 'Custo', type: 'number', flex: 1 },
 ];

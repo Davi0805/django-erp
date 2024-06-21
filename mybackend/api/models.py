@@ -65,8 +65,7 @@ class CargasInfo(models.Model):
     contractorstring = models.CharField(max_length=100, default='')
     shipping_status = models.CharField(max_length=15, choices=CHOICES, default=OPTION_D)
     type_of_load = models.CharField(max_length=100)
-    origin = CountryField()
-    destination = CountryField()
+    origin = models.ForeignKey('Country', on_delete=models.CASCADE, default=46)
     weight = models.DecimalField(max_digits=10, decimal_places=2)
     cost = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -89,10 +88,6 @@ class CargasInfo(models.Model):
             'shipping_status': self.shipping_status,
 
             'type_of_load': self.type_of_load,
-
-            'origin': self.origin.code,
-
-            'destination': self.destination.code,
 
             'weight': self.weight,
 

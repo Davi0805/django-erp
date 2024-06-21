@@ -27,18 +27,16 @@ const NovaCargapopup = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [open, openchange] = useState(false);
+  // OPCOES FORMULARIO
   const [options, setOptions] = useState([]);
+  const [coptions, setCoptions] = useState([])
+
   const [value, setValue] = useState("");
   const [countryid, setCountryid] = useState(""); // Initialize countryid with an empty string
   const [countryid2, setCountryid2] = useState(""); // Initialize countryid2 with an empty string
-  const [stateid, setStateid] = useState(0);
-  const [cityid, setCityid] = useState(0);
-  const [language, setLanguage] = useState(0);
   const [countriesList, setCountriesList] = useState([]);
   const [countryList, setCountryList] = useState([]);
-  const [countryList2, setCountryList2] = useState([]);
   const [stateList, setStateList] = useState([]);
-  const [cityList, setCityList] = useState([]);
   const [languageList, setLanguageList] = useState([]);
 
 
@@ -56,10 +54,19 @@ const NovaCargapopup = () => {
      .then(response => response.json())
      .then(data => {
         const contractors = data.results;
-        setOptions(contractors.map((contractor) => ({ id: contractor.name, name: contractor.name })));
+        setOptions(contractors.map((contractor) => ({ id: contractor.id, name: contractor.name })));
       })
      .catch(error => console.error('Error fetching data:', error));
+
+    fetch('http://127.0.0.1:8000/country/')
+     .then(response => response.json())
+     .then(data => {
+      const countries = data.results;
+      setCoptions(countries.map((country) => ({ id: country.id, name: country.name })));
+      })
+    .catch(error => console.error('Error fetching data:', error));
   }, []);
+
 
   const funcopenchange = () => {
     openchange(true);
@@ -101,7 +108,8 @@ const NovaCargapopup = () => {
           event.preventDefault();
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
-          formJson.contractorname = options.findIndex((option) => option.name === formJson.contractorname);
+          /* formJson.contractorname = options.findIndex((option) => option.name === formJson.contractorname); */
+          /* formJson.origin = coptions.findIndex((coption) => coption.name === formJson.origin); */
           console.log(formJson)
           try {
             const response = await fetch('http://127.0.0.1:8000/cargasinfo/', {
@@ -160,22 +168,23 @@ const NovaCargapopup = () => {
               />
             </FormControl>
           </Box>
-          <Box marginTop="25px" display="flex" justifyContent="space-between" gap="10px">
+          <Box marginTop="25px">
             <FormControl fullWidth>
-              <InputLabel shrink placeholder="Selecione um pais">Selecione um país</InputLabel>
-              <select name="origin"
-                      label="Selecione um pais"
-                      style={{ opacity: 0.9 ,height: 50, backgroundColor: colors.grey[700], color: colors.grey[400], borderRadius: "4px", borderWidth: "1px", borderColor: colors.grey[400] }}
-                      onChange={handleCountryChange}
-                      value={countryid}
-                    >
-                      {countriesList.map((item, index) => (
-                        <option 
-                          key={index} value={item.iso2}>
-                          {item.name}
-                        </option>
-                      ))}
-                    </select>
+              <InputLabel htmlFor="origin">Origem</InputLabel>
+              <Select
+                style={{ height: 50, backgroundColor: colors.grey[700], color: colors.grey[300], borderRadius: "4px", borderWidth: "1px", borderColor: colors.grey[400] }}
+                value={value}
+                label="Origem"
+                startAdornment={<InputAdornment position="start"><ShoppingBagSharpIcon sx={{color: colors.greenAccent[500]}}/></InputAdornment>}
+                onChange={(event) => setValue(event.target.value)}
+                name="origin"
+              >
+                {coptions.map((coption) => (
+                  <MenuItem key={coption.id} value={coption.id}>
+                    {coption.name}
+                  </MenuItem>
+                ))}
+              </Select>
             </FormControl>
           </Box>
           <Box marginTop="25px">

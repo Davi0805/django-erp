@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import permissions, viewsets
 from rest_framework.response import Response
-from api.models import Contractor, Emails, Pedidos, CargasInfo
-from api.serializers import UsersSerializer,StatBoxSerializer, GroupSerializer, PedidosSerializer, ContractorSerializer, EmailsSerializer, CargasInfoSerializer
+from api.models import Contractor, Emails, Pedidos, CargasInfo, Country
+from api.serializers import UsersSerializer,StatBoxSerializer, GroupSerializer, PedidosSerializer, ContractorSerializer, EmailsSerializer, CargasInfoSerializer, CountrySerializer
 #from api import serializers
 from api.utils import download_excel_data
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -55,6 +55,11 @@ class Pedidos_entreguesViewSet(viewsets.ModelViewSet):
 class PedidosViewSet(viewsets.ModelViewSet):
     queryset = Pedidos.objects.all().order_by('-delivery_status')
     serializer_class = PedidosSerializer
+    """ permission_classes = [permissions.IsAuthenticated] """
+
+class CountryViewSet(viewsets.ModelViewSet):
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
     """ permission_classes = [permissions.IsAuthenticated] """
 
 class CargasInfoViewSet(viewsets.ModelViewSet):
