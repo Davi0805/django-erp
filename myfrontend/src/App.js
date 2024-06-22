@@ -7,7 +7,7 @@ import Topbar from './Scenes/Global/Topbar';
 import Dashboard from './Scenes/Dashboard/Dashboard';
 import { LoginSignup } from './Scenes/LoginSignup/LoginSignup';
 import PrivateRoute from './PrivateRoute';
-import Pedidos from './Scenes/Pedidos/Pedidos';
+import Detalhes from './Scenes/Detalhes/Detalhes';
 import PaginaPedidos from './Scenes/Pedidos/PaginaPedidos';
 
 function App() {
@@ -25,6 +25,7 @@ function App() {
                     <Route element={<PrivateRoute />}>
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/dashboard/pedidos" element={<PaginaPedidos />} />
+                      <Route path="/dashboard/detalhes" element={<Detalhes />} />
                     </Route>
               </Routes>
             </main>
