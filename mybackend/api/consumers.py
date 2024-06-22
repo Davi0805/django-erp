@@ -11,6 +11,6 @@ class CargasInfoConsumer(WebsocketConsumer):
     def receive(self, text_data):
         pass
 
-    def send_update(self, event):
-        # Send an update to the client when a CargasInfo instance is created, updated, or deleted
-        self.send(text_data=json.dumps({'type': 'update', 'data': event}))
+def send_update(self, event):
+
+        self.send(text_data=json.dumps(event))

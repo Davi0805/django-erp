@@ -111,8 +111,6 @@ const NovaCargapopup = () => {
           event.preventDefault();
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
-          /* formJson.contractorname = options.findIndex((option) => option.name === formJson.contractorname); */
-          /* formJson.origin = coptions.findIndex((coption) => coption.name === formJson.origin); */
           console.log(formJson)
           try {
             const response = await fetch('http://127.0.0.1:8000/cargasinfo/', {
@@ -128,10 +126,7 @@ const NovaCargapopup = () => {
            const responseJson = await response.json();
             console.log('Success:', responseJson);
             funcclosechange(); // Close the dialog if the request was successful
-            
-            /* setTimeout(() => {
-              window.location.reload();
-            }, 1000); */
+            window.location.reload();
           } catch (error) {
             console.error('Error:', error);
           }

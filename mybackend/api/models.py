@@ -2,7 +2,6 @@ from django.db import models
 from django_countries.fields import CountryField
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from.consumers import CargasInfoConsumer
 
 # Create your models here.
 
@@ -105,9 +104,9 @@ def send_update_on_save(sender, instance, created, **kwargs):
         event = {'type': 'created', 'data': instance.to_dict()}
     else:
         event = {'type': 'updated', 'data': instance.to_dict()}
-    CargasInfoConsumer.send_update(event)
+    print(event)  # Replace with your desired action
 
 @receiver(post_delete, sender=CargasInfo)
 def send_update_on_delete(sender, instance, **kwargs):
     event = {'type': 'deleted', 'data': instance.to_dict()}
-    CargasInfoConsumer.send_update(event)
+    print(event)  # Replace with your desired action
