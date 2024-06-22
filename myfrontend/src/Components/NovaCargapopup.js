@@ -13,6 +13,8 @@ import ShoppingBagSharpIcon from '@mui/icons-material/ShoppingBagSharp';
 import ScaleSharpIcon from '@mui/icons-material/ScaleSharp';
 import AttachMoneySharpIcon from '@mui/icons-material/AttachMoneySharp';
 import AssuredWorkloadSharpIcon from '@mui/icons-material/AssuredWorkloadSharp';
+import PublicIcon from '@mui/icons-material/Public';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {
   GetCountries,
   GetState,
@@ -32,6 +34,7 @@ const NovaCargapopup = () => {
   const [coptions, setCoptions] = useState([])
 
   const [value, setValue] = useState("");
+  const [covalue, setCovalue] = useState("");
   const [countryid, setCountryid] = useState(""); // Initialize countryid with an empty string
   const [countryid2, setCountryid2] = useState(""); // Initialize countryid2 with an empty string
   const [countriesList, setCountriesList] = useState([]);
@@ -143,7 +146,7 @@ const NovaCargapopup = () => {
                 style={{ height: 50, backgroundColor: colors.grey[700], color: colors.grey[300], borderRadius: "4px", borderWidth: "1px", borderColor: colors.grey[400] }}
                 value={value}
                 label="Contratante"
-                startAdornment={<InputAdornment position="start"><ShoppingBagSharpIcon sx={{color: colors.greenAccent[500]}}/></InputAdornment>}
+                startAdornment={<InputAdornment position="start"><AccountCircleIcon sx={{color: colors.greenAccent[500]}}/></InputAdornment>}
                 onChange={(event) => setValue(event.target.value)}
                 name="contractorname"
               >
@@ -173,10 +176,10 @@ const NovaCargapopup = () => {
               <InputLabel htmlFor="origin">Origem</InputLabel>
               <Select
                 style={{ height: 50, backgroundColor: colors.grey[700], color: colors.grey[300], borderRadius: "4px", borderWidth: "1px", borderColor: colors.grey[400] }}
-                value={value}
+                value={covalue}
                 label="Origem"
-                startAdornment={<InputAdornment position="start"><ShoppingBagSharpIcon sx={{color: colors.greenAccent[500]}}/></InputAdornment>}
-                onChange={(event) => setValue(event.target.value)}
+                startAdornment={<InputAdornment position="start"><PublicIcon sx={{color: colors.greenAccent[500]}}/></InputAdornment>}
+                onChange={(event) => setCovalue(event.target.value)}
                 name="origin"
               >
                 {coptions.map((coption) => (
