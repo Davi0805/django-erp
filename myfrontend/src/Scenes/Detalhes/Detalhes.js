@@ -34,7 +34,7 @@ export default function Detalhes() {
 
       <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" mt="15px" gap="15px" gridAutoRows="140px">
 
-        <Box gridColumn="span 6" gridRow="span 3" backgroundColor={colors.primary[400]} display="flex" width="48.50vw" height="51vh" sx={{ boxShadow: 4 }}>
+        <Box gridColumn="span 6" gridRow="span 3" backgroundColor={colors.primary[400]} display="flex" sx={{ boxShadow: 4 }}>
 
           <Typography variant="h4" margin="20px">#131805000071025</Typography>
 

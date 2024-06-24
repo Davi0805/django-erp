@@ -68,7 +68,7 @@ class CargasInfo(models.Model):
     weight = models.DecimalField(max_digits=10, decimal_places=2)
     cost = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
-    ce_mercante = models.CharField(max_length=100, default='')
+    ce_mercante = models.CharField(max_length=15, default='')
 
     def __str__(self):
 
