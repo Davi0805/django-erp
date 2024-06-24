@@ -14,7 +14,7 @@ export default function Detalhes() {
 
       <Box>
 
-        <Header title="Cargas" subtitle="Bem vindo ao painel de controle!" />
+        <Header title="Detalhes" subtitle="Informacoes sobre a carga" />
 
       </Box>
 
@@ -30,47 +30,29 @@ export default function Detalhes() {
 
     </Box>
 
-    <Box mt="15px">
+    <Box mt="15px" display="flex" justifyContent="space-between">
 
-      <Grid container spacing={2}>
+      <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" mt="15px" gap="15px" gridAutoRows="140px">
 
-        <Grid item xs={12} sm={6} md={4} lg={3}>
+        <Box gridColumn="span 6" gridRow="span 3" backgroundColor={colors.primary[400]} display="flex" width="48.50vw" height="51vh" sx={{ boxShadow: 4 }}>
 
-          <Typography variant="h6">Order Details</Typography>
+          <Typography variant="h4" margin="20px">#131805000071025</Typography>
 
-          <Typography variant="body1">Order ID: #12345</Typography>
+        </Box>
 
-          <Typography variant="body1">Order Date: 2023-02-20</Typography>
-
-          <Typography variant="body1">Total: R$ 100,00</Typography>
-
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4} lg={3}>
+        <Box>
 
           <Typography variant="h6">Shipping Information</Typography>
 
-          <Typography variant="body1">Name: John Doe</Typography>
+        </Box>
 
-          <Typography variant="body1">Address: 123 Main St, Anytown, USA</Typography>
-
-          <Typography variant="body1">Phone: (123) 456-7890</Typography>
-
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4} lg={3}>
+        <Box>
 
           <Typography variant="h6">Order Items</Typography>
 
-          <Typography variant="body1">Item 1: Product 1 x 2</Typography>
+        </Box>
 
-          <Typography variant="body1">Item 2: Product 2 x 3</Typography>
-
-          <Typography variant="body1">Item 3: Product 3 x 1</Typography>
-
-        </Grid>
-
-      </Grid>
+      </Box>
 
     </Box>
 

@@ -115,7 +115,7 @@ def export_view(request):
 	data = CargasInfo.objects.all() #dummy method to fetch data.
 	for row_num, my_row in enumerate(data):
 		row = [my_row.contractorname.name, my_row.contractorstring, my_row.shipping_status, 
-			   my_row.type_of_load, str(my_row.origin.name), str(my_row.destination.name), my_row.destination.name, my_row.weight, 
+			   my_row.type_of_load, str(my_row.origin.name), my_row.weight, 
 			   my_row.cost, my_row.ce_mercante]
 		for col_num, cell_value in enumerate(row):
 			ws.write(row_num + 1, col_num, cell_value, font_style)
