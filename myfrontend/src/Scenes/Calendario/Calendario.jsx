@@ -41,7 +41,7 @@ const Calendar = () => {
   const handleEventClick = (selected) => {
     if (
       window.confirm(
-        `Tem certeza que deseja apagar este evento? '${selected.event.title}'`
+        `Tem certeza que deseja apagar este evento? '${selected.event.title}'`,
       )
     ) {
       selected.event.remove();
@@ -81,8 +81,8 @@ const Calendar = () => {
                         day: "numeric",
                         timeZoneName: "short",
                         timeZone: "UTC",
-                        locales: {allLocales},
-                        locale: "pt-br"
+                        locales: { allLocales },
+                        locale: "pt-br",
                       })}
                     </Typography>
                   }

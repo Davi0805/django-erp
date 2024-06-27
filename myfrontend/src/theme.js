@@ -69,8 +69,8 @@ export const tokens = (mode) => ({
           600: "#af7926",
           700: "#835b1c",
           800: "#583c13",
-          900: "#2c1e09"
-      },
+          900: "#2c1e09",
+        },
       }
     : {
         grey: {
@@ -137,8 +137,8 @@ export const tokens = (mode) => ({
           600: "#af7926",
           700: "#835b1c",
           800: "#583c13",
-          900: "#2c1e09"
-      },
+          900: "#2c1e09",
+        },
       }),
 });
 
@@ -228,7 +228,7 @@ export const useMode = () => {
       toggleColorMode: () =>
         setMode((prev) => (prev === "light" ? "dark" : "light")),
     }),
-    []
+    [],
   );
 
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
