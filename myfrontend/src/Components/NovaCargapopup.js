@@ -17,8 +17,6 @@ import FormControl from "@mui/material/FormControl";
 import InputAdornment from "@mui/material/InputAdornment";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import ApartmentSharpIcon from "@mui/icons-material/ApartmentSharp";
-import LanguageSharpIcon from "@mui/icons-material/LanguageSharp";
 import ShoppingBagSharpIcon from "@mui/icons-material/ShoppingBagSharp";
 import ScaleSharpIcon from "@mui/icons-material/ScaleSharp";
 import AttachMoneySharpIcon from "@mui/icons-material/AttachMoneySharp";
@@ -26,12 +24,6 @@ import AssuredWorkloadSharpIcon from "@mui/icons-material/AssuredWorkloadSharp";
 import PublicIcon from "@mui/icons-material/Public";
 import CargaAdd from "../Scenes/Alerts/CargaAdd";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import {
-  GetCountries,
-  GetState,
-  GetCity,
-  GetLanguages, //async functions
-} from "react-country-state-city";
 
 const apiUrl = "http://127.0.0.1:8000/contractor/";
 
@@ -42,25 +34,32 @@ const NovaCargapopup = () => {
   // OPCOES FORMULARIO
   const [options, setOptions] = useState([]);
   const [coptions, setCoptions] = useState([]);
-
   const [value, setValue] = useState("");
   const [covalue, setCovalue] = useState("");
-  const [countryid, setCountryid] = useState(""); // Initialize countryid with an empty string
-  const [countryid2, setCountryid2] = useState(""); // Initialize countryid2 with an empty string
-  const [countriesList, setCountriesList] = useState([]);
-  const [countryList, setCountryList] = useState([]);
-  const [stateList, setStateList] = useState([]);
-  const [languageList, setLanguageList] = useState([]);
+  // MUDANCA DE NOME FILE UPLOADS
+  const [ce_mfilename, setCe_mfile] = useState("Adicionar CE_M");
+  const [blfilename, setBlfile] = useState("Adiconar BL");
+  const [packlistfile, setPackfile] = useState("Adicionar PackingList");
+  const [afrmmfile, setAfrmmfile] = useState("Adicionar AFRMM");
+  const handleCeMfile = (event) => {
+    const filename = event.target.files[0]?.name || "Adicionar CE_M";
+    setCe_mfile(filename);
+  };
+  const handleBlfilename = (event) => {
+    const filename = event.target.files[0]?.name || "Adicionar BL";
+    setBlfile(filename);
+  };
+  const handlePacklistfile = (event) => {
+    const filename = event.target.files[0]?.name || "Adicionar PackingList";
+    setPackfile(filename);
+  };
+  const handleAfrmmfile = (event) => {
+    const filename = event.target.files[0]?.name || "Adicionar AFRMM";
+    setAfrmmfile(filename);
+  };
+
 
   useEffect(() => {
-    GetCountries().then((result) => {
-      setCountriesList(result);
-      setCountryList(result);
-    });
-
-    GetLanguages().then((result) => {
-      setLanguageList(result);
-    });
 
     fetch("http://127.0.0.1:8000/contractor/")
       .then((response) => response.json())
@@ -94,33 +93,6 @@ const NovaCargapopup = () => {
     openchange(false);
   };
 
-  const handleCountryChange = (e) => {
-    const selectedCountry = e.target.value;
-    setCountryid(selectedCountry);
-    const countryorigin = countriesList.find(
-      (country) => country.iso2 === selectedCountry,
-    );
-    if (countryorigin) {
-      GetState(countryorigin.iso2).then((result) => {
-        setStateList(result);
-      });
-    }
-  };
-
-  const handleCountryChange2 = (e) => {
-    const country = countryList.find(
-      (country) => country.iso2 === e.target.value,
-    );
-
-    if (country && countryid2 === "") {
-      setCountryid2(country.iso2);
-
-      GetState(country.iso2).then((result) => {
-        setStateList(result);
-      });
-    }
-  };
-
   return (
     <div>
       <Button
@@ -149,16 +121,13 @@ const NovaCargapopup = () => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
-            console.log(formJson);
+            formData.append('data', JSON.stringify(formJson));
             try {
               const response = await fetch(
                 "http://127.0.0.1:8000/cargasinfo/",
                 {
                   method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(formJson),
+                  body: formData,
                 },
               );
               if (!response.ok) {
@@ -338,6 +307,92 @@ const NovaCargapopup = () => {
                 }
                 label="CE MERCANTE"
               />
+            </FormControl>
+          </Box>
+          <Box marginTop="25px" display="flex">
+            <FormControl fullWidth>
+              <Button
+                variant="outlined"
+                style={{
+                  height: 50,
+                  backgroundColor: colors.grey[700],
+                  color: colors.grey[300],
+                  borderColor: colors.grey[500],
+                }}
+                component="label"
+              >
+                {blfilename}
+                <input
+                  type="file"
+                  name="blfile"
+                  hidden
+                  onChange={handleBlfilename}
+                />
+              </Button>
+            </FormControl>
+            <FormControl fullWidth>
+              <Button
+                variant="outlined"
+                style={{
+                  height: 50,
+                  backgroundColor: colors.grey[700],
+                  color: colors.grey[300],
+                  borderColor: colors.grey[500],
+                }}
+                component="label"
+              >
+                {ce_mfilename}
+                <input
+                  type="file"
+                  name="ce_m_file"
+                  hidden
+                  onChange={handleCeMfile}
+                />
+              </Button>
+            </FormControl>
+          </Box>
+          <Box marginTop="25px">
+            <FormControl fullWidth>
+              <Button
+                variant="outlined"
+                style={{
+                  height: 50,
+                  backgroundColor: colors.grey[700],
+                  color: colors.grey[300],
+                  borderColor: colors.grey[500],
+                }}
+                component="label"
+              >
+                {packlistfile}
+                <input
+                  type="file"
+                  name="packinglist"
+                  hidden
+                  onChange={handlePacklistfile}
+                />
+              </Button>
+            </FormControl>
+          </Box>
+          <Box marginTop="25px">
+            <FormControl fullWidth>
+              <Button
+                variant="outlined"
+                style={{
+                  height: 50,
+                  backgroundColor: colors.grey[700],
+                  color: colors.grey[300],
+                  borderColor: colors.grey[500],
+                }}
+                component="label"
+              >
+                {afrmmfile}
+                <input
+                  type="file"
+                  name="afrmmfile"
+                  hidden
+                  onChange={handleAfrmmfile}
+                />
+              </Button>
             </FormControl>
           </Box>
         </DialogContent>

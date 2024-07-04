@@ -12,6 +12,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import HttpsIcon from "@mui/icons-material/Https";
 import { useNavigate } from "react-router-dom";
 import axiosConfig from "../../axiosConfig";
+import { useState } from "react";
 
 export const LoginSignup = () => {
   const theme = useTheme();
@@ -23,7 +24,7 @@ export const LoginSignup = () => {
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
     try {
-      // Autenticação e obtenção de tokens do seu backend (assumindo que você já tem essa parte configurada)
+      // Autenticação e obtenção de tokens do backend
       const response = await axiosConfig.post("api/token/", formJson); // Endpoint para obtenção de tokens
       const { access, refresh } = response.data;
 

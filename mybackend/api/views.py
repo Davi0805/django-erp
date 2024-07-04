@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import permissions, viewsets
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.models import Contractor, Emails, Pedidos, CargasInfo, Country
@@ -68,6 +68,7 @@ class CargasInfoViewSet(viewsets.ModelViewSet):
     queryset = CargasInfo.objects.all()
     serializer_class = CargasInfoSerializer
     authentication_classes = [JWTAuthentication]
+    parser_classes = [FormParser, MultiPartParser, JSONParser]
 
 class StatBoxViewSet(viewsets.ViewSet):
     authentication_classes = [JWTAuthentication]
