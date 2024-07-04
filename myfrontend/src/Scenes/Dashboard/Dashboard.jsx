@@ -107,7 +107,7 @@ const Dashboard = () => {
       >
         <Box>
           <Header
-            title="CardozoBros"
+            title="TREVO"
             subtitle="Bem vindo ao painel de controle!"
           />
         </Box>
@@ -244,7 +244,7 @@ const Dashboard = () => {
           gridColumn={{
             xs: "span 12", // Full width on extra small screens
             sm: "span 6", // Half width on small screens
-            md: "span 6",}}
+            md: "span 9",}}
           gridRow={{
             xs: "span 8",
             sm: "span 6",
@@ -263,7 +263,7 @@ const Dashboard = () => {
            gridColumn={{
             xs: "span 12", // Full width on extra small screens
             sm: "span 6", // Half width on small screens
-            md: "span 6",}}
+            md: "span 3",}}
           gridRow={{
             xs: "span 8",
             sm: "span 6",

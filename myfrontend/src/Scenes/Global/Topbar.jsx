@@ -53,7 +53,7 @@ const Topbar = () => {
           display="inline"
           sx={{ mb: "5px", textDecoration: "none" }}
         >
-          CDZBROS
+          TREVO
         </Typography>
         {/* <MenuItem component={Link} to="/dashboard">Dashboard</MenuItem> */}
         <Box display="flex" alignItems="center" marginLeft="5px">

@@ -43,7 +43,7 @@ class CargasInfoSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = CargasInfo
-        fields = ['id', 'contractorname', 'contractor_name_display', 'shipping_status', 'type_of_load', 'origin', 'origin_name_display', 'weight', 'cost', 'created_at', 'ce_mercante', 'contractorstring']
+        fields = ['id', 'contractorname', 'contractor_name_display', 'shipping_status', 'type_of_load', 'origin', 'origin_name_display', 'weight', 'cost', 'created_at', 'ce_mercante', 'ce_m_file', 'packinglist', 'contractorstring', 'ncm', 'cntrnum', 'referenciaid', 'afrmmpago', 'afrmmfile', 'blnum', 'blfile', 'nfnum']
         lookup_field = 'id'
 
     def get_contractor_name_display(self, obj):

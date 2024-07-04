@@ -3,25 +3,93 @@ import { tokens } from "../../theme";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { ptBR } from "@mui/x-data-grid/locales";
+import { Button } from "@mui/material"
+import AddIcon from '@mui/icons-material/Add';
+
 
 const columnscarga = [
   /* { field: "id", headerName: "ID", flex: 0.3, hide: true }, */
-  { field: "ce_mercante", headerName: "CE Mercante", flex: 1 },
+  { field: "ce_mercante", headerName: "CE Mercante", flex: 0.8 },
   {
     field: "shipping_status",
     headerName: "Status de Envio",
-    flex: 0.6,
+    flex: 0.5,
     align: "center",
+    headerAlign: "center",
   },
-  { field: "type_of_load", headerName: "Tipo de Carga", flex: 1 },
+  { field: "type_of_load", headerName: "Tipo de Carga", flex: 0.8, align: "center",
+    headerAlign: "center", },
   {
     field: "origin_name_display",
     headerName: "Origem",
     flex: 0.5,
     align: "center",
+    headerAlign: "center",
   },
-  { field: "weight", headerName: "Peso", type: "number", flex: 1 },
-  { field: "cost", headerName: "Custo", type: "number", flex: 1 },
+  { field: "weight", headerName: "Peso", type: "number", flex: 0.5, align: "center",
+    headerAlign: "center", },
+  { field: "cost", headerName: "Custo", type: "number", flex: 0.5, align: "center",
+    headerAlign: "center", },
+  {
+    field: "BL",
+    headerName: "BL",
+    flex: 0.5,
+    align: "center",
+    headerAlign: "center",
+    renderCell: (params) => {
+      if (params.row.blfile === null) {
+        return (
+          <Button
+            style={{color: 'red'}}
+            size="small"
+          >
+            Indisponível
+          </Button>
+        );
+      } else {
+        return (
+          <strong>
+            <a
+              href={`http://127.0.0.1:8000/repositorio/bl/${params.row.id}`}
+              download={params.row.filename + '.' + params.row.extension}
+            >
+              <Button
+                variant="contained"
+                color="secondary"
+                size="small"
+              >
+                Baixar
+              </Button>
+            </a>
+          </strong>
+        );
+      }
+    },
+  },
+  {
+    field: " ",
+    headerName: " ",
+    flex: 0.5,
+    align: "center",
+    headerAlign: "center",
+    renderCell: (params) => (
+      <strong>
+        <a
+          href={`http://127.0.0.1:8000/repositorio/bl/${params.row.id}`}
+          download={params.row.filename + '.' + params.row.extension}
+        >
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          startIcon={<AddIcon />}
+        >
+        Detalhes
+        </Button>
+        </a>
+      </strong>
+    ),
+  }
 ];
 
 const WS_URL = "ws://127.0.0.1:800";
@@ -117,7 +185,6 @@ const Pedidos = ({ margin, altura, largura }) => {
           columns={columnscarga}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          checkboxSelection
         />
       </Box>
   );

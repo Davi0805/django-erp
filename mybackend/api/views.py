@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import permissions, viewsets
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.models import Contractor, Emails, Pedidos, CargasInfo, Country
 from api.serializers import UsersSerializer,StatBoxSerializer, GroupSerializer, PedidosSerializer, ContractorSerializer, EmailsSerializer, CargasInfoSerializer, CountrySerializer
@@ -101,7 +103,7 @@ class StatBoxViewSet(viewsets.ViewSet):
 def export_view(request):
 	# content-type of response
 	response = HttpResponse(content_type='application/ms-excel')	#decide file name
-	response['Content-Disposition'] = 'attachment; filename="ThePythonDjango.xls"'	#creating workbook
+	response['Content-Disposition'] = 'attachment; filename="TREVO_Cargas.xls"'	#creating workbook
 	wb = xlwt.Workbook(encoding='utf-8')	#adding sheet
 	ws = wb.add_sheet("sheet1")	# Sheet header, first row
 	row_num = 0	
@@ -121,5 +123,58 @@ def export_view(request):
 			ws.write(row_num + 1, col_num, cell_value, font_style)
 	wb.save(response)
 	return response
+
+class ce_mercantedownload(APIView):
+    def get(self, request, pk):
+        object = CargasInfo.objects.get(pk=pk)
+        serializer = CargasInfoSerializer(object)
+        data = serializer.data
+        file_url = data['ce_m_file']
+        file_path = object.ce_m_file.path  # get the file path from the model
+        with open(file_path, 'rb') as f:
+            file_data = f.read()
+        response = HttpResponse(file_data, content_type='application/octet-stream')
+        response['Content-Disposition'] = f'attachment; filename="{file_url}"'
+        return response
+    
+class bl_original_download(APIView):
+     def get(self, request, pk):
+        object = CargasInfo.objects.get(pk=pk)
+        serializer = CargasInfoSerializer(object)
+        data = serializer.data
+        file_url = data['blfile']
+        file_path = object.blfile.path
+        with open(file_path, 'rb') as f:
+           file_data = f.read()
+        response = HttpResponse(file_data, content_type='application/octet-stream')
+        response['Content-Disposition'] = f'attachment; filename="{file_url}"'
+        return response
+
+class packinglist_download(APIView):
+     def get(self, request, pk):
+        object = CargasInfo.objects.get(pk=pk)
+        serializer = CargasInfoSerializer(object)
+        data = serializer.data
+        file_url = data['packinglist']
+        file_path = object.blfile.path
+        with open(file_path, 'rb') as f:
+           file_data = f.read()
+        response = HttpResponse(file_data, content_type='application/octet-stream')
+        response['Content-Disposition'] = f'attachment; filename="{file_url}"'
+        return response  
+     
+class afrmm_download(APIView):
+     def get(self, request, pk):
+        object = CargasInfo.objects.get(pk=pk)
+        serializer = CargasInfoSerializer(object)
+        data = serializer.data
+        file_url = data['afrmmfile']
+        file_path = object.blfile.path
+        with open(file_path, 'rb') as f:
+           file_data = f.read()
+        response = HttpResponse(file_data, content_type='application/octet-stream')
+        response['Content-Disposition'] = f'attachment; filename="{file_url}"'
+        return response  
+
 
 # Create your views here.

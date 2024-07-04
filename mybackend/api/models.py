@@ -69,6 +69,16 @@ class CargasInfo(models.Model):
     cost = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     ce_mercante = models.CharField(max_length=15, default='')
+    ce_m_file = models.FileField(upload_to='CE_MERCANTE_arquivos', blank=True, null=True)
+    ncm = models.DecimalField(max_digits=30, decimal_places=0, blank=True, null=True)
+    cntrnum = models.DecimalField(max_digits=30, decimal_places=0, blank=True, null=True)
+    referenciaid = models.DecimalField(max_digits=30, decimal_places=0, blank=True, null=True)
+    afrmmpago = models.BooleanField(default=False)
+    afrmmfile = models.FileField(upload_to='AFRMM_comprovantes', blank=True, null=True)
+    blnum = models.DecimalField(max_digits=30, decimal_places=0, blank=True, null=True)
+    blfile = models.FileField(upload_to='BL_arquivos', blank=True, null=True)
+    nfnum = models.DecimalField(max_digits=30, decimal_places=0, blank=True, null=True)
+    packinglist = models.FileField(upload_to='PACKING_LIST_arquivos', blank=True, null=True)
 
     def __str__(self):
 
