@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosConfig = axios.create({
-  baseURL: "http://127.0.0.1:8000/",
+  baseURL: "http://0.0.0.0:8000/",
   headers: {
     "Content-Type": "application/json",
   },
@@ -32,7 +32,7 @@ axiosConfig.interceptors.response.use(
       if (refreshToken) {
         try {
           const response = await axios.post(
-            "http://127.0.0.1:8000/api/token/refresh/",
+            "http://0.0.0.0:8000/api/token/refresh/",
             { refresh: refreshToken },
           );
           const newAccessToken = response.data.access;

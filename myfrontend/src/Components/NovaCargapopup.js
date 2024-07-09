@@ -8,6 +8,7 @@ import {
   colors,
   Select,
   MenuItem,
+  Fade,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useTheme } from "@mui/system";
@@ -22,8 +23,10 @@ import ScaleSharpIcon from "@mui/icons-material/ScaleSharp";
 import AttachMoneySharpIcon from "@mui/icons-material/AttachMoneySharp";
 import AssuredWorkloadSharpIcon from "@mui/icons-material/AssuredWorkloadSharp";
 import PublicIcon from "@mui/icons-material/Public";
-import CargaAdd from "../Scenes/Alerts/CargaAdd";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import { Snackbar } from '@mui/material';
+import { Alert } from '@mui/material';
 
 const apiUrl = "http://127.0.0.1:8000/contractor/";
 
@@ -56,6 +59,18 @@ const NovaCargapopup = () => {
   const handleAfrmmfile = (event) => {
     const filename = event.target.files[0]?.name || "Adicionar AFRMM";
     setAfrmmfile(filename);
+  };
+  //Alerta de sucesso
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertMessage, setAlertmessage] = useState("Nova carga registrada");
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenAlert(false);
+  };
+  const handleFileChange = (event) => {
+    setOpenAlert(true);
   };
 
 
@@ -121,7 +136,7 @@ const NovaCargapopup = () => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
-            formData.append('data', JSON.stringify(formJson));
+            formData.append('data', JSON.stringify(formJson)); //CHECAR ANTES DE PRODUCAO
             try {
               const response = await fetch(
                 "http://127.0.0.1:8000/cargasinfo/",
@@ -135,7 +150,8 @@ const NovaCargapopup = () => {
               }
               const responseJson = await response.json();
               console.log("Success:", responseJson);
-              funcclosechange(); // Close the dialog if the request was successful
+              funcclosechange();
+              handleFileChange(); // Close the dialog if the request was successful
               /* window.location.reload(); */
             } catch (error) {
               console.error("Error:", error);
@@ -309,7 +325,7 @@ const NovaCargapopup = () => {
               />
             </FormControl>
           </Box>
-          <Box marginTop="25px" display="flex">
+          <Box margin="25px"display="flex">
             <FormControl fullWidth>
               <Button
                 variant="outlined"
@@ -408,6 +424,15 @@ const NovaCargapopup = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar 
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={openAlert} 
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity="success">
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

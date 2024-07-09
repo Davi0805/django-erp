@@ -25,7 +25,7 @@ export default function Detalhes() {
         alignItems="center"
       >
         <Box>
-          <Header title="Detalhes" subtitle="Informacoes sobre a carga" />
+          <Header title="Detalhes" subtitle="#02g4454f3d234-SAO" />
         </Box>
 
         <Box
@@ -37,7 +37,7 @@ export default function Detalhes() {
         >
           <Button
             sx={{
-              backgroundColor: colors.blueAccent[700],
+              backgroundColor: colors.redAccent[700],
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
@@ -47,7 +47,7 @@ export default function Detalhes() {
               color: colors.grey[100],
             }}
           >
-            Baixar planilhas
+            Deletar pedido
           </Button>
         </Box>
       </Box>
@@ -60,24 +60,63 @@ export default function Detalhes() {
           gap="15px"
           gridAutoRows="140px"
         >
+         <Box
+  gridColumn="span 11"
+  gridRow="span 4"
+  backgroundColor={colors.primary[400]}
+  sx={{ boxShadow: 4 }}
+>
+  <Box display={"flex"} justifyContent={"space-around"}>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    Referencia ID:
+  </Typography>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    Contratante:
+  </Typography>
+  </Box>
+    <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+      Status do envio:
+    </Typography>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    Tipo de carga:
+  </Typography>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    Origem:
+  </Typography>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    Peso: 
+  </Typography>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    Custo: 
+  </Typography>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    Data de criação: 
+  </Typography>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    CE_MERCANTE: 
+  </Typography>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    NCM:
+  </Typography>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    Numero do container: 
+  </Typography>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    Numero do BL: 
+  </Typography>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    Numero da NF:
+  </Typography>
+</Box>
+
           <Box
-            gridColumn="span 6"
-            gridRow="span 3"
-            backgroundColor={colors.primary[400]}
-            display="flex"
-            sx={{ boxShadow: 4 }}
-          >
-            <Typography variant="h4" margin="20px">
-              #131805000071025
-            </Typography>
-          </Box>
-
-          <Box>
+          gridColumn={"span 1"}
+          gridRow={"span 4"}
+          backgroundColor={colors.primary[400]}
+          sx={{ boxShadow: 4 }}>
+            <Box m={"20px"}>
             <Typography variant="h6">Shipping Information</Typography>
-          </Box>
-
-          <Box>
-            <Typography variant="h6">Order Items</Typography>
+            </Box>
           </Box>
         </Box>
       </Box>
