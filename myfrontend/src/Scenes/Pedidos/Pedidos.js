@@ -185,6 +185,7 @@ const Pedidos = ({ margin, altura, largura }) => {
           columns={columnscarga}
           pageSize={5}
           rowsPerPageOptions={[5]}
+          checkboxSelection
         />
       </Box>
   );
