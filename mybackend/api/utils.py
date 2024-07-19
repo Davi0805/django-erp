@@ -14,7 +14,7 @@ from api.models import CargasInfo
 def download_excel_data(request):
 	# content-type of response
 	response = HttpResponse(content_type='application/ms-excel')	#decide file name
-	response['Content-Disposition'] = 'attachment; filename="ThePythonDjango.xls"'	#creating workbook
+	response['Content-Disposition'] = 'attachment; filename="Cargas.xls"'	#creating workbook
 	wb = xlwt.Workbook(encoding='utf-8')	#adding sheet
 	ws = wb.add_sheet("sheet1")	# Sheet header, first row
 	row_num = 0	

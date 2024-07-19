@@ -5,9 +5,11 @@ services:
   backend:
     build:
       context: ./mybackend
-    command: python manage.py runserver 0.0.0.0:8000
+    #command: python manage.py runserver 0.0.0.0:8000
+    command: daphne -b 0.0.0.0 -p 8000 backend.asgi:application
+    depends_on:
+      - redis
     environment:
-      - DJANGO_SETTINGS_MODULE=backend.settings
       - REDIS_HOST=redis
       - REDIS_PORT=6379
     volumes:
@@ -23,3 +25,11 @@ services:
       - ./myfrontend:/app
     ports:
       - "3000:3000"
+
+  redis:
+    image: "redis:alpine"
+    environment:
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6379
+    ports:
+      - "6379:6379"

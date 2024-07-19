@@ -1,5 +1,5 @@
 import { Box, IconButton, MenuItem, useTheme, Typography } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import LightModeOutlined from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlined from "@mui/icons-material/DarkModeOutlined";
@@ -8,12 +8,14 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import PersonOutlined from "@mui/icons-material/PersonOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import axiosConfig from "../../axiosConfig";
+import { Menu } from "@mui/material";
 
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const navigate = useNavigate();
+  const [companyselect, setCompanyselect] = useState(null)
   const isAuthenticated = !!localStorage.getItem("accessToken");
 
   const handleLogout = () => {
@@ -30,6 +32,14 @@ const Topbar = () => {
       console.error("Error fetching data:", error);
     }
   };
+
+  const handleopenprofile = e => {
+    setCompanyselect(e.currentTarget);
+  }
+
+  const handlecloseprofile = () => {
+    setCompanyselect(null);
+  }
 
   return isAuthenticated ? (
     <Box
@@ -74,8 +84,23 @@ const Topbar = () => {
           )}
         </IconButton>
         <IconButton>
-          <PersonOutlined />
+          <PersonOutlined onClick={handleopenprofile} />
+
         </IconButton>
+        <Menu
+        id="simple-menu"
+        anchorEl={companyselect}
+        keepMounted
+        open={Boolean(companyselect)}
+        onClose={handlecloseprofile}
+      >
+          <MenuItem onClick={handlecloseprofile}>
+            Trevo
+          </MenuItem>
+          <MenuItem onClick={handlecloseprofile}>
+            CardozoBros
+          </MenuItem>
+      </Menu>
         <IconButton>
           <NotificationsOutlined />
         </IconButton>

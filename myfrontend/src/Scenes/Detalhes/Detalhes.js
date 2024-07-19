@@ -37,6 +37,20 @@ export default function Detalhes() {
         >
           <Button
             sx={{
+              backgroundColor: colors.blueAccent[700],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "center",
+              color: colors.grey[100],
+            }}
+          >
+            Editar
+          </Button>
+          <Button
+            sx={{
               backgroundColor: colors.redAccent[700],
               fontSize: "14px",
               fontWeight: "bold",
@@ -66,31 +80,55 @@ export default function Detalhes() {
   backgroundColor={colors.primary[400]}
   sx={{ boxShadow: 4 }}
 >
-  <Box display={"flex"} justifyContent={"space-around"}>
+  <Box display={"flex"} justifyContent={"flex-start"}>
+  <Box display={"flex"} justifyContent={"space-between"} width={"100%"}>
   <Typography variant="h4" margin="20px" color={colors.grey[200]}>
     Referencia ID:
   </Typography>
   <Typography variant="h4" margin="20px" color={colors.grey[200]}>
-    Contratante:
+  Data de criação:
   </Typography>
+  <Button
+  variant="contained"
+  
+  sx={{
+    backgroundColor: colors.greenAccent[700],
+    fontSize: "10px",
+    margin: "20px",
+    fontWeight: "bold",
+    /* padding: "10px 20px", */
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
+    color: colors.grey[100],
+  }}
+  >
+    Em transito
+  </Button>
   </Box>
-    <Typography variant="h4" margin="20px" color={colors.grey[200]}>
-      Status do envio:
-    </Typography>
+  </Box>
+  <Box display={"flex"} justifyContent={"flex-start"}>
+    <Box display={"flex"} justifyContent={"space-between"} width={"100%"}>
   <Typography variant="h4" margin="20px" color={colors.grey[200]}>
     Tipo de carga:
   </Typography>
   <Typography variant="h4" margin="20px" color={colors.grey[200]}>
-    Origem:
+    NCM:
   </Typography>
   <Typography variant="h4" margin="20px" color={colors.grey[200]}>
     Peso: 
+  </Typography>
+
+  </Box>
+  </Box>
+  <Typography variant="h4" margin="20px" color={colors.grey[200]}>
+    Origem:
   </Typography>
   <Typography variant="h4" margin="20px" color={colors.grey[200]}>
     Custo: 
   </Typography>
   <Typography variant="h4" margin="20px" color={colors.grey[200]}>
-    Data de criação: 
+  Contratante:
   </Typography>
   <Typography variant="h4" margin="20px" color={colors.grey[200]}>
     CE_MERCANTE: 

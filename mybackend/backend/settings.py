@@ -19,8 +19,8 @@ ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
 # Application definition
 
 REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
-
 REDIS_PORT = os.environ.get('REDIS_PORT', 6379)
+REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,37 +37,17 @@ INSTALLED_APPS = [
     'api'
 ]
 
-ASGI_APPLICATION = 'api.routing.application'
+ASGI_APPLICATION = 'backend.asgi.application'
+
 CHANNEL_LAYERS = {
     'default': {
-         'BACKEND': "channels.layers.InMemoryChannelLayer",
-        },
-    },
-""" CHANNEL_LAYERS = {
-
-    'default': {
-
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-
         'CONFIG': {
-
-            'hosts': [f'redis://{os.getenv("REDIS_HOST", "localhost")}:{os.getenv("REDIS_PORT", 6379)}'],
-
+            "hosts": [REDIS_URL],
         },
-
     },
-
-} """
-
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
 }
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
@@ -92,11 +72,21 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 255
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 255
+
+}
+
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
     'http://127.0.0.1:3000'

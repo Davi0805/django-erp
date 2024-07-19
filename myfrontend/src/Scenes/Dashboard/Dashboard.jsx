@@ -123,7 +123,7 @@ const Dashboard = () => {
             onClick={() =>
               downloadFileFromApi(
                 "/export/",
-                "ThePythonDjango.xls",
+                "Cargas.xls",
                 "application/ms-excel",
               )
             }
@@ -283,7 +283,7 @@ const Dashboard = () => {
             p="15px"
           >
             <Typography variant="h5" fontWeight="600" colors={colors.grey[100]}>
-              Atualizações recentes
+              Ultimas transacoes
             </Typography>
           </Box>
           {mockTransactions.map((transaction, index) => (

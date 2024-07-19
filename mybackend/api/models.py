@@ -1,5 +1,4 @@
 from django.db import models
-from django_countries.fields import CountryField
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
@@ -24,6 +23,15 @@ class Country(models.Model):
 
     def __str__(self):
 
+        return self.name
+
+class Company(models.Model):
+    name = models.CharField(max_length=60)
+    cnpj = models.CharField(max_length=14)
+    faturamento = models.DecimalField(max_digits=10, decimal_places=2)
+    lucro = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
         return self.name
 
 class Emails(models.Model):
@@ -61,6 +69,7 @@ class CargasInfo(models.Model):
         (OPTION_D, 'Pendente'),
     ]
     contractorname = models.ForeignKey('Contractor', on_delete=models.CASCADE)
+    companyid = models.ForeignKey('Company', on_delete=models.CASCADE, blank=True, null=True)
     contractorstring = models.CharField(max_length=100, default='')
     shipping_status = models.CharField(max_length=15, choices=CHOICES, default=OPTION_D)
     type_of_load = models.CharField(max_length=100)
