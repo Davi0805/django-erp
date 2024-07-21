@@ -15,6 +15,7 @@ router.register(r'statbox', StatBoxViewSet, basename='statbox')
 router.register(r'country', CountryViewSet)
 
 urlpatterns = [
+    path('', include('django_prometheus.urls')),
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

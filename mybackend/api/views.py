@@ -157,7 +157,7 @@ class packinglist_download(APIView):
         serializer = CargasInfoSerializer(object)
         data = serializer.data
         file_url = data['packinglist']
-        file_path = object.blfile.path
+        file_path = object.packinglist.path
         with open(file_path, 'rb') as f:
            file_data = f.read()
         response = HttpResponse(file_data, content_type='application/octet-stream')
@@ -170,7 +170,7 @@ class afrmm_download(APIView):
         serializer = CargasInfoSerializer(object)
         data = serializer.data
         file_url = data['afrmmfile']
-        file_path = object.blfile.path
+        file_path = object.afrmmfile.path
         with open(file_path, 'rb') as f:
            file_data = f.read()
         response = HttpResponse(file_data, content_type='application/octet-stream')

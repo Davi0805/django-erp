@@ -12,7 +12,9 @@ import BlockIcon from "@mui/icons-material/Block";
 import NovaCargapopup from "../../Components/NovaCargapopup";
 import axiosConfig from "../../axiosConfig";
 import { mockTransactions } from "../../Data/mockData";
+import { BottomNavigation } from "@mui/material";
 import axios from "axios";
+
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -248,7 +250,7 @@ const Dashboard = () => {
           gridRow={{
             xs: "span 8",
             sm: "span 6",
-            md: "span 3",}}
+            md: "span 4",}}
           backgroundColor={colors.primary[400]}
           display="flex"
           width="100%"
@@ -267,7 +269,7 @@ const Dashboard = () => {
           gridRow={{
             xs: "span 8",
             sm: "span 6",
-            md: "span 3",}}
+            md: "span 4",}}
           width="100%"
           height="auto"
           backgroundColor={colors.primary[400]}
@@ -320,6 +322,20 @@ const Dashboard = () => {
           ))}
         </Box>
       </Box>
+      <BottomNavigation component={"footer"}
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          bgcolor: colors.primary[400],
+          py: 2,
+          textAlign: 'center',
+        }}>
+        <Typography variant="h6" color={colors.grey[100]}>
+          © 2021 Trevo. Todos os direitos reservados.
+        </Typography>
+      </BottomNavigation>
     </Box>
   );
 };

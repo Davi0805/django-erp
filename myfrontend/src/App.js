@@ -28,7 +28,7 @@ function App() {
                     path="/dashboard/pedidos"
                     element={<PaginaPedidos />}
                   />
-                  <Route path="/dashboard/detalhes" element={<Detalhes />} />
+                  <Route path="/dashboard/detalhes/:id/" element={<Detalhes />} />
                 </Route>
               </Routes>
             </main>

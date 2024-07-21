@@ -75,8 +75,7 @@ const columnscarga = [
     renderCell: (params) => (
       <strong>
         <a
-          href={`http://127.0.0.1:8000/repositorio/bl/${params.row.id}`}
-          download={params.row.filename + '.' + params.row.extension}
+          href={`http://127.0.0.1:3000/dashboard/detalhes/${params.row.id}`}
         >
         <Button
           variant="contained"

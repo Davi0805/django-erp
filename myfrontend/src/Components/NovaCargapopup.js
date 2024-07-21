@@ -325,7 +325,7 @@ const NovaCargapopup = () => {
               />
             </FormControl>
           </Box>
-          <Box margin="25px"display="flex">
+          <Box marginTop={"25px"}display="flex">
             <FormControl fullWidth>
               <Button
                 variant="outlined"
