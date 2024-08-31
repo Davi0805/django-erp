@@ -20,7 +20,7 @@ ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', 'backend']
 
 REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
 REDIS_PORT = os.environ.get('REDIS_PORT', 6379)
-REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
+REDIS_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/1'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -31,22 +31,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework_simplejwt',
 
-    'channels',
     'django_prometheus',
     'rest_framework',
     'corsheaders',
     'api'
 ]
 
-ASGI_APPLICATION = 'backend.asgi.application'
 
-CHANNEL_LAYERS = {
+CACHES = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [REDIS_URL],
-        },
-    },
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': [REDIS_URL],  # adjust the host, port, and db number as needed
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
 }
 
 

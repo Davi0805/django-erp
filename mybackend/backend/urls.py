@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from api.views import UsersViewSet, GroupViewSet, ContractorViewSet, EmailsViewSet, Pedidos_pendentesViewSet, export_view, PedidosViewSet, CargasInfoViewSet, StatBoxViewSet, CountryViewSet, ce_mercantedownload, bl_original_download, packinglist_download, afrmm_download
+from api.views import UsersViewSet, GroupViewSet, ContractorViewSet, EmailsViewSet, Pedidos_pendentesViewSet, export_view, PedidosViewSet, CargasInfoViewSet, StatBoxViewSet, CountryViewSet, ce_mercantedownload, bl_original_download, packinglist_download, afrmm_download, TransactionsViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UsersViewSet)
@@ -13,6 +13,7 @@ router.register(r'pedidos', PedidosViewSet, basename='pedidos')
 router.register(r'cargasinfo', CargasInfoViewSet, basename='cargas')
 router.register(r'statbox', StatBoxViewSet, basename='statbox')
 router.register(r'country', CountryViewSet)
+router.register(r'transactions', TransactionsViewSet, basename='transactions')
 
 urlpatterns = [
     path('', include('django_prometheus.urls')),

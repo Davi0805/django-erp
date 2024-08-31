@@ -109,7 +109,7 @@ const Dashboard = () => {
       >
         <Box>
           <Header
-            title="TREVO"
+            title="GNOSES"
             subtitle="Bem vindo ao painel de controle!"
           />
         </Box>

@@ -1,13 +1,16 @@
 from django.contrib.auth.models import User, Group
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, status
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.models import Contractor, Emails, Pedidos, CargasInfo, Country
-from api.serializers import UsersSerializer,StatBoxSerializer, GroupSerializer, PedidosSerializer, ContractorSerializer, EmailsSerializer, CargasInfoSerializer, CountrySerializer
+from api.models import Contractor, Emails, Pedidos, CargasInfo, Country, Transactions
+from api.serializers import UsersSerializer,StatBoxSerializer, GroupSerializer, PedidosSerializer, ContractorSerializer, EmailsSerializer, CargasInfoSerializer, CountrySerializer, TransactionsSerializer
 #from api import serializers
 from api.utils import download_excel_data
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 import pytz
 import pandas as pd
@@ -59,18 +62,26 @@ class PedidosViewSet(viewsets.ModelViewSet):
     serializer_class = PedidosSerializer
     """ permission_classes = [permissions.IsAuthenticated] """
 
+@method_decorator(cache_page(timeout=60 * 30), name='list')
 class CountryViewSet(viewsets.ModelViewSet):
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
     """ permission_classes = [permissions.IsAuthenticated] """
 
+@method_decorator(cache_page(timeout=60 * 30), name='list')
 class CargasInfoViewSet(viewsets.ModelViewSet):
-    queryset = CargasInfo.objects.all()
+    queryset = CargasInfo.objects.prefetch_related('contractorname', 'origin').all()
     serializer_class = CargasInfoSerializer
     authentication_classes = [JWTAuthentication]
     parser_classes = [FormParser, MultiPartParser, JSONParser]
 
-class StatBoxViewSet(viewsets.ViewSet):
+
+class TransactionsViewSet(viewsets.ModelViewSet):
+    queryset = Transactions.objects.all()
+    serializer_class = TransactionsSerializer
+    authentication_classes = [JWTAuthentication]
+
+class StatBoxViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
 
     def list(self, request):

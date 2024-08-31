@@ -33,8 +33,8 @@ services:
       - ./myfrontend:/app
     ports:
       - "3000:3000"
-    depends_on:
-      - nginx
+    #depends_on:
+    # - nginx
 
   redis:
     image: "redis:alpine"

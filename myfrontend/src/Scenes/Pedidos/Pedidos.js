@@ -9,7 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 const columnscarga = [
   /* { field: "id", headerName: "ID", flex: 0.3, hide: true }, */
-  { field: "ce_mercante", headerName: "CE Mercante", flex: 0.8 },
+  { field: "ce_mercante", headerName: "Cliente", flex: 0.8 },
   {
     field: "shipping_status",
     headerName: "Status de Envio",

@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
-from api.models import Contractor, Emails, Pedidos, CargasInfo, Country
+from api.models import Contractor, Emails, Pedidos, CargasInfo, Country, Company, Transactions
 from rest_framework import serializers
+from django.core.exceptions import ObjectDoesNotExist
 
 #AUTH DO DJANGO REST FRAMEWORK
 class UsersSerializer(serializers.HyperlinkedModelSerializer):
@@ -35,11 +36,19 @@ class PedidosSerializer(serializers.HyperlinkedModelSerializer):
         model = Pedidos
         fields = ['shipping_id', 'contractor_id', 'created_at', 'deadline_date', 'delivery_status', 'costs', 'faturamento', 'expected_profit']
 
+class TransactionsSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Transactions
+        fields = ['id', 'nome_operador', 'transaction_date', 'transaction_value', 'transaction_type']
+        lookup_field = 'id'
+
 class CargasInfoSerializer(serializers.HyperlinkedModelSerializer):
+    contractor_name_display = serializers.StringRelatedField(source='contractorname.name', read_only=True)
     contractorname = serializers.PrimaryKeyRelatedField(queryset=Contractor.objects.all(), write_only=True)
-    contractor_name_display = serializers.SerializerMethodField(read_only=True)
+
+    origin_name_display = serializers.StringRelatedField(source='origin.name', read_only=True)
     origin = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all(), write_only=True)
-    origin_name_display = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = CargasInfo
