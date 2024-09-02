@@ -1,14 +1,26 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
+import { CircularProgress, LinearProgress } from '@mui/material';
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import Topbar from "./Scenes/Global/Topbar";
+/* import Topbar from "./Scenes/Global/Topbar";
 import Dashboard from "./Scenes/Dashboard/Dashboard";
 import { LoginSignup } from "./Scenes/LoginSignup/LoginSignup";
-import PrivateRoute from "./PrivateRoute";
+
 import Detalhes from "./Scenes/Detalhes/Detalhes";
-import PaginaPedidos from "./Scenes/Pedidos/PaginaPedidos";
+import PaginaPedidos from "./Scenes/Pedidos/PaginaPedidos"; */
+import PrivateRoute from "./PrivateRoute";
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const Topbar = lazy(() => import('./Scenes/Global/Topbar'));
+const Dashboard = lazy(() => import('./Scenes/Dashboard/Dashboard'));
+const LoginSignup = lazy(() => import('./Scenes/LoginSignup/LoginSignup'));
+const Detalhes = lazy(() => import('./Scenes/Detalhes/Detalhes'));
+const PaginaPedidos = lazy(() => import('./Scenes/Pedidos/PaginaPedidos'));
+
+const queryClient = new QueryClient();
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -19,6 +31,8 @@ function App() {
         <div className="app">
           <Router>
             <main className="content">
+              <Suspense fallback={<LinearProgress color="inherit" />}>
+              <QueryClientProvider client={queryClient}>
               <Topbar />
               <Routes>
                 <Route path="/" element={<LoginSignup />} />
@@ -31,6 +45,8 @@ function App() {
                   <Route path="/dashboard/detalhes/:id/" element={<Detalhes />} />
                 </Route>
               </Routes>
+              </QueryClientProvider>
+              </Suspense>
             </main>
           </Router>
         </div>

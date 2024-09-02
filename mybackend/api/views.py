@@ -5,18 +5,16 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.models import Contractor, Emails, Pedidos, CargasInfo, Country, Transactions
 from api.serializers import UsersSerializer,StatBoxSerializer, GroupSerializer, PedidosSerializer, ContractorSerializer, EmailsSerializer, CargasInfoSerializer, CountrySerializer, TransactionsSerializer
-#from api import serializers
 from api.utils import download_excel_data
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
-
-import pytz
 import pandas as pd
 import xlwt
 from api.models import CargasInfo
+from .signals import put_request_signal
 import requests
+from django.core.cache import cache
 from django.http import HttpResponse
 
 
@@ -64,16 +62,127 @@ class PedidosViewSet(viewsets.ModelViewSet):
 
 @method_decorator(cache_page(timeout=60 * 30), name='list')
 class CountryViewSet(viewsets.ModelViewSet):
-    queryset = Country.objects.all()
+    queryset = Country.objects.only('id', 'name')
     serializer_class = CountrySerializer
     """ permission_classes = [permissions.IsAuthenticated] """
 
-@method_decorator(cache_page(timeout=60 * 30), name='list')
+    """ @method_decorator(cache_page(timeout=60 * 5, key_prefix='cargasinfocache'), name='list')
+    class CargasInfoViewSet(viewsets.ModelViewSet):
+        queryset = CargasInfo.objects.prefetch_related('contractorname', 'origin').all()
+        serializer_class = CargasInfoSerializer
+        authentication_classes = [JWTAuthentication]
+        parser_classes = [FormParser, MultiPartParser, JSONParser]
+
+        def run_custom_function(self, request, instance):
+            put_request_signal.send(sender=self.__class__, request=request, instance=instance)
+            pass
+        def update(self, request, *args, **kwargs):
+            partial = kwargs.pop('partial', False)
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+
+            # Call your custom function
+            print("\nENTRANDO NA FUNCAO\n")
+            self.run_custom_function(request, instance)
+            cache_key = 'cargasinfocache'
+            cache.delete(cache_key)
+
+            cargas = CargasInfo.objects.all()
+            cache.set(cache_key, cargas, 60*1)
+
+            if getattr(instance, '_prefetched_objects_cache', None):
+                # If 'prefetch_related' has been applied to a queryset, we need to forcibly
+                # invalidate the prefetch cache on the instance.
+                instance._prefetched_objects_cache = {}
+
+            return Response(serializer.data) """
+
 class CargasInfoViewSet(viewsets.ModelViewSet):
-    queryset = CargasInfo.objects.prefetch_related('contractorname', 'origin').all()
-    serializer_class = CargasInfoSerializer
-    authentication_classes = [JWTAuthentication]
-    parser_classes = [FormParser, MultiPartParser, JSONParser]
+        queryset = CargasInfo.objects.prefetch_related('contractorname', 'origin').all()
+        serializer_class = CargasInfoSerializer
+        authentication_classes = [JWTAuthentication]
+        parser_classes = [FormParser, MultiPartParser, JSONParser]
+
+        def get_cache_key(self, instance):
+            return f"cargasinfo:{instance.pk}"
+        
+        def create(self, request, *args, **kwargs):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            instance = serializer.instance
+
+            # Set the cache key with the new instance data
+            cache_key = self.get_cache_key(instance)
+            cache.set(cache_key, instance, 60*10)  # Cache for 10 minutes
+
+            # Invalidate the list cache
+            list_cache_key = "cargasinfo:list"
+            cache.delete(list_cache_key)
+
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+        def update(self, request, *args, **kwargs):
+            partial = kwargs.pop('partial', False)
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+
+            # Delete the cache key for the updated instance
+            cache_key = self.get_cache_key(instance)
+            cache.delete(cache_key)
+
+            # Set the cache key with the updated data
+            cache.set(cache_key, instance, 60*10)  # Cache for 10 minutes
+
+            list_cache_key = "cargasinfo:list"
+            cache.delete(list_cache_key)
+
+            if getattr(instance, '_prefetched_objects_cache', None):
+                # If 'prefetch_related' has been applied to a queryset, we need to forcibly
+                # invalidate the prefetch cache on the instance.
+                instance._prefetched_objects_cache = {}
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        def destroy(self, request, *args, **kwargs):
+            instance = self.get_object()
+            self.perform_destroy(instance)
+
+            # Delete the cache key for the deleted instance
+            cache_key = self.get_cache_key(instance)
+            cache.delete(cache_key)
+
+            # Invalidate the list cache
+            list_cache_key = "cargasinfo:list"
+            cache.delete(list_cache_key)
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+   
+        def list(self, request):
+            # Get the cache key for the list view
+            cache_key = f"cargasinfo:list"
+
+            # Try to get the cached data
+            data = cache.get(cache_key)
+            if data is not None:
+                return Response(data)
+
+            # If the cache is empty, get the data from the database
+            queryset = self.get_queryset()
+            serializer = self.get_serializer(queryset, many=True)
+            data = serializer.data
+
+            # Set the cache key with the data
+            cache.set(cache_key, data, 60*10)  # Cache for 10 minutes
+
+            return Response(data)
+
+    
 
 
 class TransactionsViewSet(viewsets.ModelViewSet):

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
+import { CircularProgress } from '@mui/material';
 import "./Dashboard.css";
 import { Typography, useTheme, Box, Button } from "@mui/material";
 import { tokens } from "../../theme";
@@ -9,12 +10,14 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import DirectionsBoatFilledIcon from "@mui/icons-material/DirectionsBoatFilled";
 import DescriptionIcon from "@mui/icons-material/Description";
 import BlockIcon from "@mui/icons-material/Block";
-import NovaCargapopup from "../../Components/NovaCargapopup";
+/* import NovaCargapopup from "../../Components/NovaCargapopup"; */
 import axiosConfig from "../../axiosConfig";
 import { mockTransactions } from "../../Data/mockData";
 import { BottomNavigation } from "@mui/material";
 import axios from "axios";
 
+/* const Pedidos = lazy(() => import('../Pedidos/Pedidos')); */
+const NovaCargapopup = lazy(() => import('../../Components/NovaCargapopup'));
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -76,27 +79,6 @@ const Dashboard = () => {
 
     fetchStats();
 
-    /*    const socket = new WebSocket(SOCKET_SERVER_URL);
-
-    socket.onmessage = (event) => {
-      const newData = JSON.parse(event.data).data;
-      setStats(prevStats => ({
-        ...prevStats,
-        ...newData
-      }));
-    };
-
-    socket.onclose = (event) => {
-      console.log('WebSocket closed: ', event);
-    };
-
-    socket.onerror = (error) => {
-      console.error('WebSocket error: ', error);
-    };
-
-    return () => {
-      socket.close();
-    }; */
   }, []);
 
   return (
@@ -121,6 +103,7 @@ const Dashboard = () => {
           sx={{ gap: "20px" }}
         >
           <NovaCargapopup />
+          
           <Button
             onClick={() =>
               downloadFileFromApi(
@@ -324,7 +307,8 @@ const Dashboard = () => {
       </Box>
       <BottomNavigation component={"footer"}
         sx={{
-          position: 'fixed',
+          position: 'relative',
+          top: 10,
           bottom: 0,
           left: 0,
           width: '100%',

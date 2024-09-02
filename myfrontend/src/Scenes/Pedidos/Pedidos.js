@@ -1,10 +1,11 @@
-import { Box, useTheme } from "@mui/material";
+import { Box, CircularProgress, LinearProgress, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { ptBR } from "@mui/x-data-grid/locales";
 import { Button } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add';
+import { useQuery } from "@tanstack/react-query";
 
 
 const columnscarga = [
@@ -91,46 +92,73 @@ const columnscarga = [
   }
 ];
 
-const WS_URL = "ws://127.0.0.1:800";
 
 const Pedidos = ({ margin, altura, largura }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [rows, setRows] = useState([]);
-  const [ws, setWs] = useState(null);
+  /* const [rows, setRows] = useState([]); */
 
-  const reconnectInterval = 5000;
+/*   const fetchCargas = async () => {
+    fetch("http://127.0.0.1:8000/cargasinfo/")
+    .then((response) => response.json())
+    .then((data) => {
+      setRows(
+        data.results.map((item, index) => ({
+          id: index, // DataGrid requires a unique 'id' for each row
+          ...item,
+        })),
+      );
+    })
+    .catch((error) => console.error("Error fetching data:", error));
 
-  useEffect(() => {
+  return () => {
+  };
+} */
+
+  const fetchCargas = async () => {
+
+    const response = await fetch('http://127.0.0.1:8000/cargasinfo/');
+    return response.json();
+  };
+  
+
+  
+
+const { data, error, isLoading } = useQuery({
+  queryKey: "cargasinfo",
+  queryFn: fetchCargas,
+});
+
+console.log('Ta entrando aqui: ', data);
+
+
+  if (isLoading) {
+
+    return <LinearProgress color="secondary"/>;
+
+  }
+
+
+  if (error) {
+
+    return <div>Error: {error.message}</div>;
+
+  }
+  console.log('Data:', data); // Add this line to log the data object
+
+
+   const rows = data.map((item, index) => ({
+
+    id: index, // DataGrid requires a unique 'id' for each row
+
+    ...item,
+
+  }));
+
+
+  
+  /* useEffect(() => {
     // Establish WebSocket connection
-    const newWs = new WebSocket("wss://localhost/ws/cargas_info");
-
-    setWs(newWs);
-
-    // Handle WebSocket messages
-
-    newWs.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-
-      if (data.type === "update") {
-        // Update the DataGrid rows
-
-        setRows(data.data);
-      }
-    };
-
-    // Handle WebSocket errors
-
-    newWs.onerror = (event) => {
-      console.error("WebSocket error:", event);
-    };
-
-    // Handle WebSocket close
-
-    newWs.onclose = () => {
-      console.log("WebSocket connection closed. Reconnecting in 5 seconds...");
-    };
-
     // Fetch initial data from API
     fetch("http://127.0.0.1:8000/cargasinfo/")
       .then((response) => response.json())
@@ -145,10 +173,8 @@ const Pedidos = ({ margin, altura, largura }) => {
       .catch((error) => console.error("Error fetching data:", error));
 
     return () => {
-      // Close WebSocket connection when component unmounts
-      newWs.close();
     };
-  }, []);
+  }, []); */
 
   return (
       <Box

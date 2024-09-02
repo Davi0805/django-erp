@@ -27,10 +27,12 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { Snackbar } from '@mui/material';
 import { Alert } from '@mui/material';
+import { useQueryClient } from "@tanstack/react-query";
 
 const apiUrl = "http://127.0.0.1:8000/contractor/";
 
 const NovaCargapopup = () => {
+  const queryClient = useQueryClient();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [open, openchange] = useState(false);
@@ -152,6 +154,7 @@ const NovaCargapopup = () => {
               console.log("Success:", responseJson);
               funcclosechange();
               handleFileChange(); // Close the dialog if the request was successful
+              queryClient.invalidateQueries('cargasinfo');
               /* window.location.reload(); */
             } catch (error) {
               console.error("Error:", error);

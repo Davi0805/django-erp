@@ -29,7 +29,7 @@ class EmailsSerializer(serializers.HyperlinkedModelSerializer):
 class CountrySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Country
-        fields = ['id', 'name', 'iso_code']
+        fields = ['id', 'name']
 
 class PedidosSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -45,10 +45,10 @@ class TransactionsSerializer(serializers.HyperlinkedModelSerializer):
 
 class CargasInfoSerializer(serializers.HyperlinkedModelSerializer):
     contractor_name_display = serializers.StringRelatedField(source='contractorname.name', read_only=True)
-    contractorname = serializers.PrimaryKeyRelatedField(queryset=Contractor.objects.all(), write_only=True)
+    contractorname = serializers.PrimaryKeyRelatedField(queryset=Contractor.objects.all(), write_only=False)
 
     origin_name_display = serializers.StringRelatedField(source='origin.name', read_only=True)
-    origin = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all(), write_only=True)
+    origin = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all(), write_only=False)
 
     class Meta:
         model = CargasInfo

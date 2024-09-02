@@ -9,6 +9,7 @@ import {
   CardContent,
   CardHeader,
 } from "@mui/material";
+import DeleteButton from "../../Components/Deletebutton";
 import { tokens } from "../../theme";
 import Header from "../../Components/Header/Header";
 import DownloadIcon from '@mui/icons-material/Download';
@@ -20,12 +21,14 @@ import DirectionsBoatFilledIcon from '@mui/icons-material/DirectionsBoatFilled';
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import UpdateCargapopup from "../../Components/UpdateCargapopup";
 
 export default function Detalhes() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const params = useParams();
   const [data, setData] = useState([]);
+
 
   console.log(params)
 
@@ -65,21 +68,9 @@ export default function Detalhes() {
           marginRight="25px"
           sx={{ gap: "20px" }}
         >
-          <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-              alignItems: "center",
-              display: "flex",
-              justifyContent: "center",
-              color: colors.grey[100],
-            }}
-          >
-            Editar
-          </Button>
-          <Button
+          <UpdateCargapopup requestData={data} params={params} />
+          <DeleteButton endpoint={`http://127.0.0.1:8000/cargasinfo/${params.id}`} />
+           {/* <Button
             sx={{
               backgroundColor: colors.redAccent[700],
               fontSize: "14px",
@@ -92,7 +83,7 @@ export default function Detalhes() {
             }}
           >
             Deletar pedido
-          </Button>
+          </Button> */}
         </Box>
       </Box>
 
@@ -138,13 +129,13 @@ export default function Detalhes() {
 
           <Box display="grid" backgroundColor={colors.primary[400]} gridColumn="span 12" gridRow={"span 12"} gap="20px" alignContent={"center"} sx={{ boxShadow: 4, padding: "20px" }}>
             <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap="20px">
-            <Typography variant="h5" color={colors.grey[200]} >Custo: {data.cost}</Typography>
+            <Typography variant="h5" color={colors.grey[200]} >Custo: R${data.cost}</Typography>
             <Typography variant="h5" color={colors.grey[200]} >NCM: {data.ncm}</Typography>
             <Typography variant="h5" color={colors.grey[200]} >Container: {data.cntrnum}</Typography>
             </Box>
             <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap="20px">
             <Typography variant="h5" color={colors.grey[200]} >Origem: {data.origin_name_display}</Typography>
-            <Typography variant="h5" color={colors.grey[200]} >Peso: {data.weight} Kg</Typography>
+            <Typography variant="h5" color={colors.grey[200]} >Peso: {data.weight}kg</Typography>
             <Typography variant="h5" color={colors.grey[200]} >CE MERCANTE: {data.ce_mercante}</Typography>
             <Typography variant="h5" color={colors.grey[200]} >Destino:</Typography>
             <Typography variant="h5" color={colors.grey[200]} >Tipo de carga: {data.type_of_load}</Typography>
