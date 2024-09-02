@@ -4,7 +4,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.models import Contractor, Emails, Pedidos, CargasInfo, Country, Transactions
-from api.serializers import UsersSerializer,StatBoxSerializer, GroupSerializer, PedidosSerializer, ContractorSerializer, EmailsSerializer, CargasInfoSerializer, CountrySerializer, TransactionsSerializer
+from api.serializers import UsersSerializer,StatBoxSerializer, GroupSerializer, PedidosSerializer, ContractorSerializer, EmailsSerializer, CargasInfoSerializer, CountrySerializer, TransactionsSerializer, MyTokenObtainPairSerializer
 from api.utils import download_excel_data
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.views.decorators.cache import cache_page
@@ -16,6 +16,7 @@ from .signals import put_request_signal
 import requests
 from django.core.cache import cache
 from django.http import HttpResponse
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 # AUTH DO DJANGO REST FRAMEWORK
@@ -59,6 +60,10 @@ class PedidosViewSet(viewsets.ModelViewSet):
     queryset = Pedidos.objects.all().order_by('-delivery_status')
     serializer_class = PedidosSerializer
     """ permission_classes = [permissions.IsAuthenticated] """
+
+class IsAuthenticatedView(APIView):
+    def get(self, request):
+        return Response({'authenticated': request.user.is_authenticated})
 
 @method_decorator(cache_page(timeout=60 * 30), name='list')
 class CountryViewSet(viewsets.ModelViewSet):
@@ -104,6 +109,7 @@ class CargasInfoViewSet(viewsets.ModelViewSet):
         serializer_class = CargasInfoSerializer
         authentication_classes = [JWTAuthentication]
         parser_classes = [FormParser, MultiPartParser, JSONParser]
+        permission_classes = [permissions.IsAuthenticated]
 
         def get_cache_key(self, instance):
             return f"cargasinfo:{instance.pk}"
@@ -298,4 +304,59 @@ class afrmm_download(APIView):
         return response  
 
 
-# Create your views here.
+class MyTokenObtainPairView(TokenObtainPairView):
+
+    serializer_class = MyTokenObtainPairSerializer
+
+
+    def post(self, request, *args, **kwargs):
+
+        serializer = self.get_serializer(data=request.data)
+
+        serializer.is_valid(raise_exception=True)
+
+        refresh = serializer.validated_data['refresh']
+
+        access = serializer.validated_data['access']
+
+
+        response = Response(serializer.validated_data)
+
+        response.set_cookie(
+
+            'token',
+
+            access,
+
+            max_age=60 * 60 * 24,  # expira em 1 dia
+
+            path='/',
+
+            secure=True,
+
+            httponly=True,
+
+            samesite='strict',
+
+        )
+
+        response.set_cookie(
+
+            'refreshToken',
+
+            refresh,
+
+            max_age=60 * 60 * 24 * 7,  # expira em 1 semana
+
+            path='/',
+
+            secure=True,
+
+            httponly=True,
+
+            samesite='strict',
+
+        )
+
+
+        return response

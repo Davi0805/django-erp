@@ -6,6 +6,7 @@ import { ptBR } from "@mui/x-data-grid/locales";
 import { Button } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add';
 import { useQuery } from "@tanstack/react-query";
+import axiosConfig from "../../axiosConfig";
 
 
 const columnscarga = [
@@ -117,8 +118,8 @@ const Pedidos = ({ margin, altura, largura }) => {
 
   const fetchCargas = async () => {
 
-    const response = await fetch('http://127.0.0.1:8000/cargasinfo/');
-    return response.json();
+    const response = await axiosConfig.get('/cargasinfo/');
+    return response.data;
   };
   
 

@@ -2,6 +2,7 @@ from django.contrib.auth.models import User, Group
 from api.models import Contractor, Emails, Pedidos, CargasInfo, Country, Company, Transactions
 from rest_framework import serializers
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 #AUTH DO DJANGO REST FRAMEWORK
 class UsersSerializer(serializers.HyperlinkedModelSerializer):
@@ -82,3 +83,12 @@ class StatBoxSerializer(serializers.Serializer):
 
     def get_option_p_count(self, obj):
         return CargasInfo.objects.filter(shipping_status='P').count()
+    
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    def validate(self, attrs):
+
+        data = super().validate(attrs)
+
+        return data

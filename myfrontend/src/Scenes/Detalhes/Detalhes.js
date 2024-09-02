@@ -22,6 +22,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import UpdateCargapopup from "../../Components/UpdateCargapopup";
+import axiosConfig from "../../axiosConfig";
 
 export default function Detalhes() {
   const theme = useTheme();
@@ -35,16 +36,10 @@ export default function Detalhes() {
 
   useEffect(() => {
     console.log('Fetching data for ID:', params.id); // Debug log
-    fetch(`http://127.0.0.1:8000/cargasinfo/${params.id}`)
+    axiosConfig.get(`http://127.0.0.1:8000/cargasinfo/${params.id}`)
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Fetched data:', data); // Log fetched data
-        setData(data);
+        console.log('Fetched data:', response.data); // Log fetched data
+        setData(response.data);
       })
       .catch(error => console.error('Fetch error:', error));
   }, [params.id]); // Consider dependency on params.id if it should trigger refetch

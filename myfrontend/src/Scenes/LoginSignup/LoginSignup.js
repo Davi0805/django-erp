@@ -13,6 +13,7 @@ import HttpsIcon from "@mui/icons-material/Https";
 import { useNavigate } from "react-router-dom";
 import axiosConfig from "../../axiosConfig";
 import { useState } from "react";
+import { setToken } from "../../Components/Services/utils";
 
 export const LoginSignup = () => {
   const theme = useTheme();
@@ -29,10 +30,11 @@ export const LoginSignup = () => {
       const { access, refresh } = response.data;
 
       // Armazena o token de acesso no localStorage
-      localStorage.setItem("accessToken", access);
-      localStorage.setItem("refreshToken", refresh);
+      /* localStorage.setItem("accessToken", access);
+      localStorage.setItem("refreshToken", refresh); */
 
       console.log("Token JWT do Vault:", access);
+      setToken(access);
 
       // Redirecionar após login bem-sucedido
       navigate("/dashboard");

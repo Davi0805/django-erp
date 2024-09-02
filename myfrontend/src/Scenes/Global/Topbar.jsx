@@ -9,6 +9,7 @@ import PersonOutlined from "@mui/icons-material/PersonOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import axiosConfig from "../../axiosConfig";
 import { Menu } from "@mui/material";
+import Cookies from 'js-cookie'
 
 const Topbar = () => {
   const theme = useTheme();
@@ -16,11 +17,11 @@ const Topbar = () => {
   const colorMode = useContext(ColorModeContext);
   const navigate = useNavigate();
   const [companyselect, setCompanyselect] = useState(null)
-  const isAuthenticated = !!localStorage.getItem("accessToken");
+  /* const isAuthenticated = !!localStorage.getItem("accessToken"); */
+  const isAuthenticated = !!Cookies.get("token");
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    Cookies.remove("token");
     navigate("/");
   };
 
