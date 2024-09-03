@@ -4,7 +4,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.models import Contractor, Emails, Pedidos, CargasInfo, Country, Transactions
-from api.serializers import UsersSerializer,StatBoxSerializer, GroupSerializer, PedidosSerializer, ContractorSerializer, EmailsSerializer, CargasInfoSerializer, CountrySerializer, TransactionsSerializer, MyTokenObtainPairSerializer
+from api.serializers import UsersSerializer,StatBoxSerializer, GroupSerializer, PedidosSerializer, ContractorSerializer, EmailsSerializer, CargasInfoSerializer, CountrySerializer, TransactionsSerializer, MyTokenObtainPairSerializer, CargasInfoPatchSerializer
 from api.utils import download_excel_data
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.views.decorators.cache import cache_page
@@ -167,7 +167,7 @@ class CargasInfoViewSet(viewsets.ModelViewSet):
             list_cache_key = "cargasinfo:list"
             cache.delete(list_cache_key)
 
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_200_OK)
    
         def list(self, request):
             # Get the cache key for the list view
@@ -187,8 +187,33 @@ class CargasInfoViewSet(viewsets.ModelViewSet):
             cache.set(cache_key, data, 60*10)  # Cache for 10 minutes
 
             return Response(data)
+        
+        def patch(self, request, *args, **kwargs):
+            partial = kwargs.pop('partial', True)  # Note the default value is True for patch
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
 
-    
+            # Delete the cache key for the patched instance
+
+            cache_key = self.get_cache_key(instance)
+            cache.delete(cache_key)
+            # Set the cache key with the patched data
+            cache.set(cache_key, instance, 60*10)  # Cache for 10 minutes
+            list_cache_key = "cargasinfo:list"
+            cache.delete(list_cache_key)
+
+            if getattr(instance, '_prefetched_objects_cache', None):
+                # If 'prefetch_related' has been applied to a queryset, we need to forcibly
+                # invalidate the prefetch cache on the instance.
+                instance._prefetched_objects_cache = {}
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        def get_patch_serializer(self, *args, **kwargs):
+            return CargasInfoPatchSerializer(*args, **kwargs)
+
 
 
 class TransactionsViewSet(viewsets.ModelViewSet):

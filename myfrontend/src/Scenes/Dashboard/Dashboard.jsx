@@ -113,7 +113,7 @@ const Dashboard = () => {
               )
             }
             sx={{
-              backgroundColor: colors.blueAccent[700],
+              backgroundColor: colors.blueAccent[400],
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
@@ -155,7 +155,7 @@ const Dashboard = () => {
             subtitle="Cargas em trânsito"
             icon={
               <DirectionsBoatFilledIcon
-                sx={{ color: colors.blueAccent[500] }}
+                sx={{ color: colors.blueAccent[400] }}
               />
             }
             progress={`${((stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count) / 100) * stats.option_t_count}%`}
@@ -178,10 +178,10 @@ const Dashboard = () => {
           <StatBox
             title={`${stats.option_b_count} / ${stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count}`}
             subtitle="Cargas bloqueadas"
-            icon={<BlockIcon sx={{ color: colors.redAccent[500] }} />}
+            icon={<BlockIcon sx={{ color: colors.blueAccent[400] }} />}
             progress={`${((stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count) / 100) * stats.option_b_count}%`}
             colorprogressstat={colors.redAccent[500]}
-            textcolor={colors.redAccent[500]}
+            textcolor={colors.blueAccent[400]}
           />
         </Box>
         <Box
@@ -198,10 +198,10 @@ const Dashboard = () => {
           <StatBox
             title={`${stats.option_l_count} / ${stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count}`}
             subtitle="Cargas liberadas"
-            icon={<LocalShippingIcon sx={{ color: colors.greenAccent[500] }} />}
+            icon={<LocalShippingIcon sx={{ color: colors.blueAccent[400] }} />}
             progress={`${((stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count) / 100) * stats.option_l_count}%`}
-            colorprogressstat={colors.greenAccent[400]}
-            textcolor={colors.greenAccent[500]}
+            colorprogressstat={colors.blueAccent[400]}
+            textcolor={colors.blueAccent[400]}
           />
         </Box>
         <Box
@@ -219,10 +219,10 @@ const Dashboard = () => {
           <StatBox
             title={`${stats.option_p_count} / ${stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count}`}
             subtitle="Cargas aguardando documentação"
-            icon={<DescriptionIcon sx={{ color: colors.orange[400] }} />}
+            icon={<DescriptionIcon sx={{ color: colors.blueAccent[400] }} />}
             progress={`${((stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count) / 100) * stats.option_p_count}%`}
-            colorprogressstat={colors.orange[400]}
-            textcolor={colors.orange[400]}
+            colorprogressstat={colors.blueAccent[400]}
+            textcolor={colors.blueAccent[400]}
           />
         </Box>
         <Box
@@ -263,12 +263,12 @@ const Dashboard = () => {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
+            borderBottom={`4px solid ${colors.blueAccent[400]}`}
             colors={colors.grey[100]}
             p="15px"
           >
-            <Typography variant="h5" fontWeight="600" colors={colors.grey[100]}>
-              Ultimas transacoes
+            <Typography variant="h5" fontWeight="600" colors={colors.blueAccent[400]}>
+              Relatorios
             </Typography>
           </Box>
           {mockTransactions.map((transaction, index) => (
@@ -278,24 +278,24 @@ const Dashboard = () => {
               display="flex"
               justifyContent="space-between"
               alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
+              borderBottom={`4px solid ${colors.primary[400]}`}
               p="15px"
             >
               <Box>
                 <Typography
-                  color={colors.blueAccent[600]}
+                  color={colors.blueAccent[400]}
                   variant="h5"
                   fontWeight="600"
                 >
                   {transaction.txId}
                 </Typography>
-                <Typography color={colors.grey[100]}>
+                <Typography color={colors.blueAccent[500]}>
                   {transaction.user}
                 </Typography>
               </Box>
               <Box color={colors.grey[100]}>{transaction.date}</Box>
               <Box
-                backgroundColor={colors.blueAccent[600]}
+                backgroundColor={colors.blueAccent[500]}
                 p="5px 10px"
                 borderRadius="4px"
               >
@@ -312,11 +312,11 @@ const Dashboard = () => {
           bottom: 0,
           left: 0,
           width: '100%',
-          bgcolor: colors.primary[400],
+          bgcolor: colors.blueAccent[400],
           py: 2,
           textAlign: 'center',
         }}>
-        <Typography variant="h6" color={colors.grey[100]}>
+        <Typography variant="h6" color={colors.grey[200]}>
           © 2021 Trevo. Todos os direitos reservados.
         </Typography>
       </BottomNavigation>

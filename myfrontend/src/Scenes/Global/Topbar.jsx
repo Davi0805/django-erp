@@ -20,6 +20,11 @@ const Topbar = () => {
   /* const isAuthenticated = !!localStorage.getItem("accessToken"); */
   const isAuthenticated = !!Cookies.get("token");
 
+  const handleColorModeChange = () => {
+    colorMode.toggleColorMode();
+    localStorage.setItem("colorMode", theme.palette.mode === "dark" ? "light" : "dark");
+  };
+
   const handleLogout = () => {
     Cookies.remove("token");
     navigate("/");
@@ -48,18 +53,20 @@ const Topbar = () => {
       justifyContent="space-between"
       p={2}
       sx={{
+        backgroundColor: colors.primary[400],
         boxShadow: 4, // Using Material-UI's predefined shadow intensity
         // Or for a custom shadow, you can use:
         // boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
       }}
     >
-      <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="center"
+      >
         <Typography
           marginTop="5px"
           component={Link}
           to="/dashboard"
           variant="h4"
-          color={colors.grey[100]}
+          color={colors.grey[200]}
           fontWeight="bold"
           display="inline"
           sx={{ mb: "5px", textDecoration: "none" }}
@@ -123,7 +130,7 @@ const Topbar = () => {
     >
       <Box display="flex"></Box>
       <Box display="flex">
-        <IconButton onClick={colorMode.toggleColorMode}>
+        <IconButton onClick={handleColorModeChange}>
           {theme.palette.mode === "dark" ? (
             <DarkModeOutlined />
           ) : (

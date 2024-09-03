@@ -79,7 +79,7 @@ export const LoginSignup = () => {
                   startAdornment={
                     <InputAdornment position="start">
                       <AccountCircleIcon
-                        sx={{ color: colors.greenAccent[500] }}
+                        sx={{ color: colors.blueAccent[500] }}
                       />
                     </InputAdornment>
                   }
@@ -97,7 +97,7 @@ export const LoginSignup = () => {
                   placeholder="Senha"
                   startAdornment={
                     <InputAdornment position="start">
-                      <HttpsIcon sx={{ color: colors.greenAccent[500] }} />
+                      <HttpsIcon sx={{ color: colors.blueAccent[500] }} />
                     </InputAdornment>
                   }
                   label="Senha"

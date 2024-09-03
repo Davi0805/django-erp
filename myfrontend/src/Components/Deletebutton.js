@@ -16,9 +16,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useNavigate } from 'react-router-dom';
+import axiosConfig from '../axiosConfig';
+import { useQueryClient } from '@tanstack/react-query';
 
 
 function DeleteButton({ endpoint }) {
+  const queryclient = useQueryClient();
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -36,22 +39,11 @@ function DeleteButton({ endpoint }) {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(endpoint, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axiosConfig.delete(endpoint);
 
-      if (response.ok) {
-        console.log('Delete request successful!');
+      console.log('Delete request successful!');
         handleClose();
         redirecionar('/dashboard')
-        // Handle success, like updating UI or state
-      } else {
-        console.log('Failed to delete.');
-        // Handle error responses
-      }
     } catch (error) {
       console.error('Error:', error);
     }
@@ -61,7 +53,7 @@ function DeleteButton({ endpoint }) {
   return (<Box>
     <Button
     sx={{
-      backgroundColor: colors.redAccent[700],
+      backgroundColor: colors.blueAccent[400],
       fontSize: "14px",
       fontWeight: "bold",
       padding: "10px 20px",

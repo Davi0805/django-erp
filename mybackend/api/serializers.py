@@ -62,6 +62,12 @@ class CargasInfoSerializer(serializers.HyperlinkedModelSerializer):
     def get_origin_name_display(self, obj):
         return obj.origin.name
     
+class CargasInfoPatchSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = CargasInfo
+        fields = ['shipping_status', 'type_of_load', 'origin', 'weight', 'cost', 'created_at', 'ce_mercante', 'contractorstring', 'ncm', 'cntrnum', 'referenciaid', 'afrmmpago', 'blnum', 'nfnum']
+        lookup_field = 'id'
+    
 class StatBoxSerializer(serializers.Serializer):
     option_l_count = serializers.SerializerMethodField()
     option_t_count = serializers.SerializerMethodField()

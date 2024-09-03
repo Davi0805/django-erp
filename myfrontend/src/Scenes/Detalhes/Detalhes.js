@@ -122,7 +122,7 @@ export default function Detalhes() {
   </Box>
 
 
-          <Box display="grid" backgroundColor={colors.primary[400]} gridColumn="span 12" gridRow={"span 12"} gap="20px" alignContent={"center"} sx={{ boxShadow: 4, padding: "20px" }}>
+          <Box display="grid" gridColumn="span 12" gridRow={"span 12"} gap="20px" alignContent={"center"} sx={{ boxShadow: 4, padding: "20px" }}>
             <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap="20px">
             <Typography variant="h5" color={colors.grey[200]} >Custo: R${data.cost}</Typography>
             <Typography variant="h5" color={colors.grey[200]} >NCM: {data.ncm}</Typography>
@@ -162,12 +162,20 @@ export default function Detalhes() {
               disabled={!data.afrmmfile}><DownloadIcon />Comprovante de pagamento</Button>
             </Box>
           </Box>
-          <Box display="grid" gridColumn="span 12" gridRow={"span 10"} alignContent={"center"} backgroundColor={colors.primary[400]} sx={{ boxShadow: 4, padding: "10px" }}>
+          <Box display="grid" gridColumn="span 12" gridRow={"span 10"} alignContent={"center"} sx={{ boxShadow: 4 }}>
             <Box display={"grid"} gridTemplateColumns={"repeat(4, 1fr)"}>
+          <Box marginRight={"20px"}>
           <StatBox title={"20/10/2024 - 18:00"} textcolor={colors.grey[200]} icon={<CalendarMonthIcon />} subtitle={"Previsao de chegada"} ></StatBox>
+          </Box>
+          <Box marginRight={"20px"}>
           <StatBox title={"R$: 7.540"} textcolor={colors.grey[200]} icon={<MonetizationOnIcon />} subtitle={"Faturamento do pedido"}></StatBox>
+          </Box>
+          <Box marginRight={"20px"}>
           <StatBox title={"R$: 27.560"} textcolor={colors.grey[200]} icon={<AccountBalanceIcon />} subtitle={"Faturamento total do cliente"}></StatBox>
+          </Box>
+          <Box marginRight={"20px"}>
           <StatBox title={"XXXX"} textcolor={colors.grey[200]} icon={<DirectionsBoatFilledIcon />} subtitle={"Terminal de carregamento"}></StatBox>
+          </Box>
           </Box>
           </Box>
         </Box>

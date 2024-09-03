@@ -74,7 +74,7 @@ export const tokens = (mode) => ({
       }
     : {
         grey: {
-          100: "#141414",
+          100: "#F7F7F7",
           200: "#292929",
           300: "#3d3d3d",
           400: "#525252",
@@ -111,7 +111,7 @@ export const tokens = (mode) => ({
           200: "#58201e",
           300: "#832f2c",
           400: "#af3f3b",
-          500: "#db4f4a",
+          500: "#F3797E",
           600: "#e2726e",
           700: "#e99592",
           800: "#f1b9b7",
@@ -121,12 +121,12 @@ export const tokens = (mode) => ({
           100: "#151632",
           200: "#2a2d64",
           300: "#3e4396",
-          400: "#535ac8",
-          500: "#6870fa",
-          600: "#868dfb",
-          700: "#a4a9fc",
-          800: "#c3c6fd",
-          900: "#e1e2fe",
+          400: "#7DA0FA",
+          500: "#98BDFF",
+          600: "#A599F2",
+          700: "#4b49ac",
+          800: "#7978E9",
+          900: "#F0F4FF",
         },
         orange: {
           100: "#f8ead5",
@@ -221,7 +221,7 @@ export const ColorModeContext = createContext({
 });
 
 export const useMode = () => {
-  const [mode, setMode] = useState("dark");
+  const [mode, setMode] = useState("light");
 
   const colorMode = useMemo(
     () => ({

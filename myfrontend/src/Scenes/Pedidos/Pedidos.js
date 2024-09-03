@@ -9,90 +9,6 @@ import { useQuery } from "@tanstack/react-query";
 import axiosConfig from "../../axiosConfig";
 
 
-const columnscarga = [
-  /* { field: "id", headerName: "ID", flex: 0.3, hide: true }, */
-  { field: "ce_mercante", headerName: "Cliente", flex: 0.8 },
-  {
-    field: "shipping_status",
-    headerName: "Status de Envio",
-    flex: 0.5,
-    align: "center",
-    headerAlign: "center",
-  },
-  { field: "type_of_load", headerName: "Tipo de Carga", flex: 0.8, align: "center",
-    headerAlign: "center", },
-  {
-    field: "origin_name_display",
-    headerName: "Origem",
-    flex: 0.5,
-    align: "center",
-    headerAlign: "center",
-  },
-  { field: "weight", headerName: "Peso", type: "number", flex: 0.5, align: "center",
-    headerAlign: "center", },
-  { field: "cost", headerName: "Custo", type: "number", flex: 0.5, align: "center",
-    headerAlign: "center", },
-  {
-    field: "BL",
-    headerName: "BL",
-    flex: 0.5,
-    align: "center",
-    headerAlign: "center",
-    renderCell: (params) => {
-      if (params.row.blfile === null) {
-        return (
-          <Button
-            style={{color: 'red'}}
-            size="small"
-          >
-            Indisponível
-          </Button>
-        );
-      } else {
-        return (
-          <strong>
-            <a
-              href={`http://127.0.0.1:8000/repositorio/bl/${params.row.id}`}
-              download={params.row.filename + '.' + params.row.extension}
-            >
-              <Button
-                variant="contained"
-                color="secondary"
-                size="small"
-              >
-                Baixar
-              </Button>
-            </a>
-          </strong>
-        );
-      }
-    },
-  },
-  {
-    field: " ",
-    headerName: " ",
-    flex: 0.5,
-    align: "center",
-    headerAlign: "center",
-    renderCell: (params) => (
-      <strong>
-        <a
-          href={`http://127.0.0.1:3000/dashboard/detalhes/${params.row.id}`}
-        >
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          startIcon={<AddIcon />}
-        >
-        Detalhes
-        </Button>
-        </a>
-      </strong>
-    ),
-  }
-];
-
 
 const Pedidos = ({ margin, altura, largura }) => {
   const theme = useTheme();
@@ -115,6 +31,95 @@ const Pedidos = ({ margin, altura, largura }) => {
   return () => {
   };
 } */
+
+  const columnscarga = [
+    /* { field: "id", headerName: "ID", flex: 0.3, hide: true }, */
+    { field: "ce_mercante", headerName: "Cliente", flex: 0.8 },
+    {
+      field: "shipping_status",
+      headerName: "Status de Envio",
+      flex: 0.5,
+      align: "center",
+      headerAlign: "center",
+    },
+    { field: "type_of_load", headerName: "Tipo de Carga", flex: 0.8, align: "center",
+      headerAlign: "center", },
+    {
+      field: "origin_name_display",
+      headerName: "Origem",
+      flex: 0.5,
+      align: "center",
+      headerAlign: "center",
+    },
+    { field: "weight", headerName: "Peso", type: "number", flex: 0.5, align: "center",
+      headerAlign: "center", },
+    { field: "cost", headerName: "Custo", type: "number", flex: 0.5, align: "center",
+      headerAlign: "center", },
+    {
+      field: "BL",
+      headerName: "BL",
+      flex: 0.5,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params) => {
+        if (params.row.blfile === null) {
+          return (
+            <Button
+              style={{color: colors.redAccent[500]}}
+              size="small"
+            >
+              Indisponível
+            </Button>
+          );
+        } else {
+          return (
+            <strong>
+              <a
+                href={`http://127.0.0.1:8000/repositorio/bl/${params.row.id}`}
+                download={params.row.filename + '.' + params.row.extension}
+              >
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                >
+                  Baixar
+                </Button>
+              </a>
+            </strong>
+          );
+        }
+      },
+    },
+    {
+      field: " ",
+      headerName: " ",
+      flex: 0.5,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params) => (
+        <strong>
+          <a
+            href={`http://127.0.0.1:3000/dashboard/detalhes/${params.row.id}`}
+          >
+          <Button
+            variant="contained"
+            /* color={colors.blueAccent[100]} */
+            sx={{
+              color: colors.grey[100],
+              backgroundColor: colors.blueAccent[500],
+            }}
+            
+            size="small"
+            startIcon={<AddIcon />}
+          >
+          Detalhes
+          </Button>
+          </a>
+        </strong>
+      ),
+    }
+  ];
 
   const fetchCargas = async () => {
 
@@ -196,11 +201,14 @@ console.log('Ta entrando aqui: ', data);
             backgroundColor: colors.blueAccent[700],
             borderBottom: "none",
           },
+          "& .MuiDataGrid-columnHeader": {
+            borderBottom: colors.blueAccent[400]
+            },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
+            backgroundColor: colors.blueAccent[900],
           },
           "& .MuiDataGrid-footerContainer": {
-            backgroundColor: colors.blueAccent[700],
+            backgroundColor: colors.blueAccent[400],
             borderTop: "none",
           },
         }}

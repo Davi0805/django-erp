@@ -28,6 +28,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { Snackbar } from '@mui/material';
 import { Alert } from '@mui/material';
 import { useQueryClient } from "@tanstack/react-query";
+import axiosConfig from "../axiosConfig";
 
 const apiUrl = "http://127.0.0.1:8000/contractor/";
 
@@ -115,7 +116,7 @@ const NovaCargapopup = () => {
       <Button
         onClick={funcopenchange}
         sx={{
-          backgroundColor: colors.blueAccent[700],
+          backgroundColor: colors.blueAccent[400],
           fontSize: "14px",
           fontWeight: "bold",
           padding: "10px 20px",
@@ -137,32 +138,34 @@ const NovaCargapopup = () => {
           onSubmit: async (event) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            formData.append('data', JSON.stringify(formJson)); //CHECAR ANTES DE PRODUCAO
+           /*  const formJson = Object.fromEntries(formData.entries());
+            formData.append('data', JSON.stringify(formJson)); //CHECAR ANTES DE PRODUCAO */
+            
+
             try {
-              const response = await fetch(
-                "http://127.0.0.1:8000/cargasinfo/",
-                {
-                  method: "POST",
-                  body: formData,
+
+              axiosConfig.post('/cargasinfo/', formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
                 },
-              );
-              if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              const responseJson = await response.json();
-              console.log("Success:", responseJson);
+              })
+                .then((response) => {
+                  console.log(response);
+                })
+                .catch((error) => {
+                  console.error(error);
+                });
               funcclosechange();
               handleFileChange(); // Close the dialog if the request was successful
               queryClient.invalidateQueries('cargasinfo');
-              /* window.location.reload(); */
+              window.location.reload();
             } catch (error) {
               console.error("Error:", error);
             }
           },
         }}
       >
-        <DialogTitle variant="h3" fontWeight="Bold" color={colors.grey[100]}>
+        <DialogTitle variant="h3" fontWeight="Bold" color={colors.grey[200]}>
           Registrar nova carga
         </DialogTitle>
         <DialogContent>
@@ -172,7 +175,7 @@ const NovaCargapopup = () => {
               <Select
                 style={{
                   height: 50,
-                  backgroundColor: colors.grey[700],
+                  backgroundColor: colors.blueAccent[900],
                   color: colors.grey[300],
                   borderRadius: "4px",
                   borderWidth: "1px",
@@ -183,7 +186,7 @@ const NovaCargapopup = () => {
                 startAdornment={
                   <InputAdornment position="start">
                     <AccountCircleIcon
-                      sx={{ color: colors.greenAccent[500] }}
+                      sx={{ color: colors.grey[400] }}
                     />
                   </InputAdornment>
                 }
@@ -204,7 +207,7 @@ const NovaCargapopup = () => {
               <OutlinedInput
                 style={{
                   height: 50,
-                  backgroundColor: colors.grey[700],
+                  backgroundColor: colors.blueAccent[900],
                   color: colors.grey[300],
                   borderRadius: "4px",
                   borderWidth: "1px",
@@ -216,7 +219,7 @@ const NovaCargapopup = () => {
                 startAdornment={
                   <InputAdornment position="start">
                     <ShoppingBagSharpIcon
-                      sx={{ color: colors.greenAccent[500] }}
+                      sx={{ color: colors.grey[400] }}
                     />
                   </InputAdornment>
                 }
@@ -230,7 +233,7 @@ const NovaCargapopup = () => {
               <Select
                 style={{
                   height: 50,
-                  backgroundColor: colors.grey[700],
+                  backgroundColor: colors.blueAccent[900],
                   color: colors.grey[300],
                   borderRadius: "4px",
                   borderWidth: "1px",
@@ -240,7 +243,7 @@ const NovaCargapopup = () => {
                 label="Origem"
                 startAdornment={
                   <InputAdornment position="start">
-                    <PublicIcon sx={{ color: colors.greenAccent[500] }} />
+                    <PublicIcon sx={{ color: colors.grey[300] }} />
                   </InputAdornment>
                 }
                 onChange={(event) => setCovalue(event.target.value)}
@@ -260,7 +263,7 @@ const NovaCargapopup = () => {
               <OutlinedInput
                 style={{
                   height: 50,
-                  backgroundColor: colors.grey[700],
+                  backgroundColor: colors.blueAccent[900],
                   color: colors.grey[300],
                   borderRadius: "4px",
                   borderWidth: "1px",
@@ -271,7 +274,7 @@ const NovaCargapopup = () => {
                 placeholder="Kg"
                 startAdornment={
                   <InputAdornment position="start">
-                    <ScaleSharpIcon sx={{ color: colors.greenAccent[500] }} />
+                    <ScaleSharpIcon sx={{ color: colors.grey[300] }} />
                   </InputAdornment>
                 }
                 label="Peso"
@@ -284,7 +287,7 @@ const NovaCargapopup = () => {
               <OutlinedInput
                 style={{
                   height: 50,
-                  backgroundColor: colors.grey[700],
+                  backgroundColor: colors.blueAccent[900],
                   color: colors.grey[300],
                   borderRadius: "4px",
                   borderWidth: "1px",
@@ -295,7 +298,7 @@ const NovaCargapopup = () => {
                 startAdornment={
                   <InputAdornment position="start">
                     <AttachMoneySharpIcon
-                      sx={{ color: colors.greenAccent[500] }}
+                      sx={{ color: colors.grey[300] }}
                     />
                   </InputAdornment>
                 }
@@ -309,7 +312,7 @@ const NovaCargapopup = () => {
               <OutlinedInput
                 style={{
                   height: 50,
-                  backgroundColor: colors.grey[700],
+                  backgroundColor: colors.blueAccent[900],
                   color: colors.grey[300],
                   borderRadius: "4px",
                   borderWidth: "1px",
@@ -320,7 +323,7 @@ const NovaCargapopup = () => {
                 startAdornment={
                   <InputAdornment position="start">
                     <AssuredWorkloadSharpIcon
-                      sx={{ color: colors.greenAccent[500] }}
+                      sx={{ color: colors.grey[300] }}
                     />
                   </InputAdornment>
                 }
@@ -334,7 +337,7 @@ const NovaCargapopup = () => {
                 variant="outlined"
                 style={{
                   height: 50,
-                  backgroundColor: colors.grey[700],
+                  backgroundColor: colors.blueAccent[900],
                   color: colors.grey[300],
                   borderColor: colors.grey[500],
                 }}
@@ -354,7 +357,7 @@ const NovaCargapopup = () => {
                 variant="outlined"
                 style={{
                   height: 50,
-                  backgroundColor: colors.grey[700],
+                  backgroundColor: colors.blueAccent[900],
                   color: colors.grey[300],
                   borderColor: colors.grey[500],
                 }}
@@ -376,7 +379,7 @@ const NovaCargapopup = () => {
                 variant="outlined"
                 style={{
                   height: 50,
-                  backgroundColor: colors.grey[700],
+                  backgroundColor: colors.blueAccent[900],
                   color: colors.grey[300],
                   borderColor: colors.grey[500],
                 }}
@@ -398,7 +401,7 @@ const NovaCargapopup = () => {
                 variant="outlined"
                 style={{
                   height: 50,
-                  backgroundColor: colors.grey[700],
+                  backgroundColor: colors.blueAccent[900],
                   color: colors.grey[300],
                   borderColor: colors.grey[500],
                 }}
@@ -418,11 +421,11 @@ const NovaCargapopup = () => {
         <DialogActions>
           <Button
             onClick={funcclosechange}
-            sx={{ color: colors.greenAccent[500] }}
+            sx={{ color: colors.grey[200] }}
           >
             Cancelar
           </Button>
-          <Button type="submit" sx={{ color: colors.greenAccent[500] }}>
+          <Button type="submit" sx={{ color: colors.grey[200] }}>
             Cadastrar
           </Button>
         </DialogActions>

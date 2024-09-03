@@ -29,6 +29,7 @@ import {
   import { Alert } from '@mui/material';
   import { useNavigate } from "react-router-dom";
   import { useMutation, useQueryClient } from '@tanstack/react-query';
+  import axiosConfig from "../axiosConfig";
   
   const apiUrl = "http://127.0.0.1:8000/contractor/";
   
@@ -44,26 +45,15 @@ import {
     const [value, setValue] = useState(requestData.contractorname || "");
     const [covalue, setCovalue] = useState(requestData.origin || "");
     // MUDANCA DE NOME FILE UPLOADS
-    const [ce_mfilename, setCe_mfile] = useState(requestData.ce_m_file || "Adicionar CE_M");
-    const [blfilename, setBlfile] = useState(requestData.blfile || "Adicionar BL");
-    const [packlistfile, setPackfile] = useState(requestData.packinglist || "Adicionar PackingList");
-    const [afrmmfile, setAfrmmfile] = useState(requestData.afrmmfile || "Adicionar AFRMM");
-    const handleCeMfile = (event) => {
-      const filename = event.target.files[0]?.name || "Adicionar CE_M";
-      setCe_mfile(filename);
-    };
-    const handleBlfilename = (event) => {
-      const filename = event.target.files[0]?.name || "Adicionar BL";
-      setBlfile(filename);
-    };
-    const handlePacklistfile = (event) => {
-      const filename = event.target.files[0]?.name || "Adicionar PackingList";
-      setPackfile(filename);
-    };
-    const handleAfrmmfile = (event) => {
-      const filename = event.target.files[0]?.name || "Adicionar AFRMM";
-      setAfrmmfile(filename);
-    };
+    /* const [ce_mfilename, setCe_mfile] = useState(requestData.ce_m_file);
+    const [blfilename, setBlfile] = useState(requestData.blfile);
+    const [packlistfile, setPackfile] = useState(requestData.packinglist);
+    const [afrmmfile, setAfrmmfile] = useState(requestData.afrmmfile);
+    // MUDANCA DE NOME FILE UPLOADS
+    const handleCeMfile = (event) => setCe_mfile(event.target.files[0]?.name || ce_mfilename);
+    const handleBlfilename = (event) => setBlfile(event.target.files[0]?.name || blfilename);
+    const handlePacklistfile = (event) => setPackfile(event.target.files[0]?.name || packlistfile);
+    const handleAfrmmfile = (event) => setAfrmmfile(event.target.files[0]?.name || afrmmfile); */
     //Alerta de sucesso
     const [openAlert, setOpenAlert] = useState(false);
     const [alertMessage, setAlertmessage] = useState("Carga alterada com sucesso!");
@@ -85,6 +75,37 @@ import {
   
     const funcclosechange = () => {
       openchange(false);
+    };
+
+    const funcUpdateCarga = async (event) => {
+
+      event.preventDefault();
+    
+      const formData = new FormData(event.currentTarget);
+    
+      const formJson = Object.fromEntries(formData.entries());
+    
+      formData.append('data', JSON.stringify(formJson)); 
+    
+    
+      try {
+    
+        const response = await axiosConfig.put(`http://127.0.0.1:8000/cargasinfo/${params.id}/`, formData);
+    
+        console.log("Success:", response.data);
+    
+        funcclosechange();
+    
+        handleFileChange(); 
+    
+        window.location.reload();
+    
+      } catch (error) {
+    
+        console.error("Error:", error);
+    
+      }
+    
     };
 
     /* const { mutate: updateCarga } = useMutation(
@@ -145,7 +166,7 @@ import {
           <Button
             onClick={funcopenchange}
             sx={{
-              backgroundColor: colors.blueAccent[700],
+              backgroundColor: colors.blueAccent[400],
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
@@ -161,37 +182,47 @@ import {
           open={open}
           fullWidth
           onClose={funcclosechange}
-          sx={colors.primary[500]}
           PaperProps={{
             component: "form",
+            encType: "multipart/form-data",
             onSubmit: async (event) => {
               event.preventDefault();
               const formData = new FormData(event.currentTarget);
-              const formJson = Object.fromEntries(formData.entries());
+              /* if (ce_mfilename !== requestData.ce_m_file) formData.append('ce_m_file', event.target.ce_m_file.files[0]);
+              if (blfilename !== requestData.blfile) formData.append('blfile', event.target.blfile.files[0]);
+              if (packlistfile !== requestData.packinglist) formData.append('packinglist', event.target.packinglist.files[0]);
+              if (afrmmfile !== requestData.afrmmfile) formData.append('afrmmfile', event.target.afrmmfile.files[0]); */
+                    const formJson = Object.fromEntries(formData.entries());
               formData.append('data', JSON.stringify(formJson)); //CHECAR ANTES DE PRODUCAO
               try {
-                const response = await fetch(
-                    `http://127.0.0.1:8000/cargasinfo/${params.id}/`,
-                  {
-                    method: "PUT",
-                    body: formData,
-                  },
+                // Use axiosConfig for the PUT request
+                const response = await axiosConfig.patch(
+                  `http://127.0.0.1:8000/cargasinfo/${params.id}/`,
+                  formData
                 );
-                if (!response.ok) {
+        
+                // Handle the success response
+                if (response.status === 200) {
+                  const responseJson = response.data;
+                  console.log("Success:", responseJson);
+                  funcclosechange();
+                  handleFileChange(); // Handle the file change event
+                  window.location.reload();
+                } else {
                   throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                const responseJson = await response.json();
-                console.log("Success:", responseJson);
-                funcclosechange();
-                handleFileChange(); // Close the dialog if the request was successful
-                window.location.reload();
               } catch (error) {
+                // Handle error
                 console.error("Error:", error);
               }
             },
+              sx: {
+                /* backgroundColor: colors.primary[500], */ // Change dialog background color
+                color: colors.grey[100], // Change text color inside the dialog
+              },
           }}
         >
-          <DialogTitle variant="h3" fontWeight="Bold" color={colors.grey[100]}>
+          <DialogTitle variant="h3" fontWeight="Bold" color={colors.grey[200]}>
             Editar carga
           </DialogTitle>
           <DialogContent>
@@ -201,18 +232,18 @@ import {
                 <Select
                   style={{
                     height: 50,
-                    backgroundColor: colors.grey[700],
-                    color: colors.grey[300],
-                    borderRadius: "4px",
+                    backgroundColor: colors.blueAccent[900],
+                    color: colors.grey[200],
+/*                     borderRadius: "4px",
                     borderWidth: "1px",
-                    borderColor: colors.grey[400],
+                    borderColor: colors.grey[400], */
                   }}
                   defaultValue={requestData.contractorname}
                   label="Contratante"
                   startAdornment={
                     <InputAdornment position="start">
                       <AccountCircleIcon
-                        sx={{ color: colors.greenAccent[500] }}
+                        sx={{ color: colors.grey[300] }}
                       />
                     </InputAdornment>
                   }
@@ -233,8 +264,8 @@ import {
                 <OutlinedInput
                   style={{
                     height: 50,
-                    backgroundColor: colors.grey[700],
-                    color: colors.grey[300],
+                    backgroundColor: colors.blueAccent[900],
+                    color: colors.grey[200],
                     borderRadius: "4px",
                     borderWidth: "1px",
                     borderColor: colors.grey[400],
@@ -246,7 +277,7 @@ import {
                   startAdornment={
                     <InputAdornment position="start">
                       <ShoppingBagSharpIcon
-                        sx={{ color: colors.greenAccent[500] }}
+                        sx={{ color: colors.grey[300] }}
                       />
                     </InputAdornment>
                   }
@@ -260,17 +291,17 @@ import {
                 <Select
                   style={{
                     height: 50,
-                    backgroundColor: colors.grey[700],
-                    color: colors.grey[300],
-                    borderRadius: "4px",
+                    backgroundColor: colors.blueAccent[900],
+                    color: colors.grey[200],
+/*                     borderRadius: "4px",
                     borderWidth: "1px",
-                    borderColor: colors.grey[400],
+                    borderColor: colors.grey[400], */
                   }}
                   label="Origem"
                   defaultValue={requestData.origin}
                   startAdornment={
                     <InputAdornment position="start">
-                      <PublicIcon sx={{ color: colors.greenAccent[500] }} />
+                      <PublicIcon sx={{ color: colors.grey[300] }} />
                     </InputAdornment>
                   }
                   onChange={(event) => setCovalue(event.target.value)}
@@ -290,11 +321,11 @@ import {
                 <OutlinedInput
                   style={{
                     height: 50,
-                    backgroundColor: colors.grey[700],
-                    color: colors.grey[300],
-                    borderRadius: "4px",
+                    backgroundColor: colors.blueAccent[900],
+                    color: colors.grey[200],
+/*                     borderRadius: "4px",
                     borderWidth: "1px",
-                    borderColor: colors.grey[400],
+                    borderColor: colors.grey[400], */
                   }}
                   id="weight"
                   name="weight"
@@ -302,7 +333,7 @@ import {
                   placeholder="Kg"
                   startAdornment={
                     <InputAdornment position="start">
-                      <ScaleSharpIcon sx={{ color: colors.greenAccent[500] }} />
+                      <ScaleSharpIcon sx={{ color: colors.grey[300] }} />
                     </InputAdornment>
                   }
                   label="Peso"
@@ -315,11 +346,11 @@ import {
                 <OutlinedInput
                   style={{
                     height: 50,
-                    backgroundColor: colors.grey[700],
-                    color: colors.grey[300],
-                    borderRadius: "4px",
+                    backgroundColor: colors.blueAccent[900],
+                    color: colors.grey[200],
+/*                     borderRadius: "4px",
                     borderWidth: "1px",
-                    borderColor: colors.grey[400],
+                    borderColor: colors.grey[400], */
                   }}
                   id="cost"
                   name="cost"
@@ -327,7 +358,7 @@ import {
                   startAdornment={
                     <InputAdornment position="start">
                       <AttachMoneySharpIcon
-                        sx={{ color: colors.greenAccent[500] }}
+                        sx={{ color: colors.grey[300] }}
                       />
                     </InputAdornment>
                   }
@@ -341,11 +372,11 @@ import {
                 <OutlinedInput
                   style={{
                     height: 50,
-                    backgroundColor: colors.grey[700],
-                    color: colors.grey[300],
-                    borderRadius: "4px",
+                    backgroundColor: colors.blueAccent[900],
+                    color: colors.grey[200],
+/*                     borderRadius: "4px",
                     borderWidth: "1px",
-                    borderColor: colors.grey[400],
+                    borderColor: colors.grey[400], */
                   }}
                   defaultValue={requestData.ce_mercante || ""}
                   id="ce_mercante"
@@ -353,7 +384,7 @@ import {
                   startAdornment={
                     <InputAdornment position="start">
                       <AssuredWorkloadSharpIcon
-                        sx={{ color: colors.greenAccent[500] }}
+                        sx={{ color: colors.grey[300] }}
                       />
                     </InputAdornment>
                   }
@@ -361,101 +392,15 @@ import {
                 />
               </FormControl>
             </Box>
-            <Box marginTop={"25px"}display="flex">
-              <FormControl fullWidth>
-                <Button
-                  variant="outlined"
-                  style={{
-                    height: 50,
-                    backgroundColor: colors.grey[700],
-                    color: colors.grey[300],
-                    borderColor: colors.grey[500],
-                  }}
-                  component="label"
-                >
-                  {blfilename}
-                  <input
-                    type="file"
-                    name="blfile"
-                    hidden
-                    onChange={handleBlfilename}
-                  />
-                </Button>
-              </FormControl>
-              <FormControl fullWidth>
-                <Button
-                  variant="outlined"
-                  style={{
-                    height: 50,
-                    backgroundColor: colors.grey[700],
-                    color: colors.grey[300],
-                    borderColor: colors.grey[500],
-                  }}
-                  component="label"
-                >
-                  {ce_mfilename}
-                  <input
-                    type="file"
-                    name="ce_m_file"
-                    hidden
-                    onChange={handleCeMfile}
-                  />
-                </Button>
-              </FormControl>
-            </Box>
-            <Box marginTop="25px">
-              <FormControl fullWidth>
-                <Button
-                  variant="outlined"
-                  style={{
-                    height: 50,
-                    backgroundColor: colors.grey[700],
-                    color: colors.grey[300],
-                    borderColor: colors.grey[500],
-                  }}
-                  component="label"
-                >
-                  {packlistfile}
-                  <input
-                    type="file"
-                    name="packinglist"
-                    hidden
-                    onChange={handlePacklistfile}
-                  />
-                </Button>
-              </FormControl>
-            </Box>
-            <Box marginTop="25px">
-              <FormControl fullWidth>
-                <Button
-                  variant="outlined"
-                  style={{
-                    height: 50,
-                    backgroundColor: colors.grey[700],
-                    color: colors.grey[300],
-                    borderColor: colors.grey[500],
-                  }}
-                  component="label"
-                >
-                  {afrmmfile}
-                  <input
-                    type="file"
-                    name="afrmmfile"
-                    hidden
-                    onChange={handleAfrmmfile}
-                  />
-                </Button>
-              </FormControl>
-            </Box>
           </DialogContent>
           <DialogActions>
             <Button
               onClick={funcclosechange}
-              sx={{ color: colors.greenAccent[500] }}
+              sx={{ color: colors.grey[200] }}
             >
               Cancelar
             </Button>
-            <Button type="submit" sx={{ color: colors.greenAccent[500] }}>
+            <Button type="submit" sx={{ color: colors.grey[200] }}>
               Salvar
             </Button>
           </DialogActions>
