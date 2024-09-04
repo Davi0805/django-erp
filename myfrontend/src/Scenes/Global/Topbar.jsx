@@ -27,6 +27,7 @@ const Topbar = () => {
 
   const handleLogout = () => {
     Cookies.remove("token");
+    Cookies.remove("refreshtoken")
     navigate("/");
   };
 

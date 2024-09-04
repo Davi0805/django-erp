@@ -37,6 +37,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<LoginSignup />} />
                 <Route element={<PrivateRoute />}>
+                <Route path="/dashboard/detalhes/:id/" element={<Detalhes />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route
                     path="/dashboard/pedidos"

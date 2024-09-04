@@ -7,12 +7,14 @@ import { Button } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add';
 import { useQuery } from "@tanstack/react-query";
 import axiosConfig from "../../axiosConfig";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
 const Pedidos = ({ margin, altura, largura }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
   /* const [rows, setRows] = useState([]); */
 
 /*   const fetchCargas = async () => {
@@ -80,7 +82,10 @@ const Pedidos = ({ margin, altura, largura }) => {
               >
                 <Button
                   variant="contained"
-                  color="secondary"
+                  sx={{
+                    color: colors.grey[200],
+                    backgroundColor: colors.blueAccent[500],
+                  }}
                   size="small"
                 >
                   Baixar
@@ -99,23 +104,24 @@ const Pedidos = ({ margin, altura, largura }) => {
       headerAlign: "center",
       renderCell: (params) => (
         <strong>
-          <a
-            href={`http://127.0.0.1:3000/dashboard/detalhes/${params.row.id}`}
-          >
+{/*           <a
+            href={`http://127.0.0.1:8080/dashboard/detalhes/${params.row.id}`}
+          > */}
           <Button
             variant="contained"
             /* color={colors.blueAccent[100]} */
             sx={{
-              color: colors.grey[100],
+              color: colors.grey[200],
               backgroundColor: colors.blueAccent[500],
             }}
-            
+            component={Link}
+            to={`/dashboard/detalhes/${params.row.id}`}
             size="small"
             startIcon={<AddIcon />}
           >
           Detalhes
           </Button>
-          </a>
+          {/* </a> */}
         </strong>
       ),
     }
@@ -133,6 +139,7 @@ const Pedidos = ({ margin, altura, largura }) => {
 const { data, error, isLoading } = useQuery({
   queryKey: "cargasinfo",
   queryFn: fetchCargas,
+  refetchOnWindowFocus: true,
 });
 
 console.log('Ta entrando aqui: ', data);
@@ -140,7 +147,7 @@ console.log('Ta entrando aqui: ', data);
 
   if (isLoading) {
 
-    return <LinearProgress color="secondary"/>;
+    return <LinearProgress sx={{color: colors.blueAccent[400]}} />;
 
   }
 

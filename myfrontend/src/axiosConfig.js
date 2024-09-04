@@ -58,7 +58,7 @@ import axios from "axios";
 import Cookies from 'js-cookie';
 
 const axiosConfig = axios.create({
-  baseURL: "http://0.0.0.0:8000/",
+  baseURL: "http://127.0.0.1:8000/",
   headers: {
     "Content-Type": "application/json",
   },
@@ -91,7 +91,7 @@ axiosConfig.interceptors.response.use(
       if (refreshToken) {
         try {
           const response = await axios.post(
-            "http://0.0.0.0:8000/api/token/refresh/",
+            "http://127.0.0.1:8000/api/token/refresh/",
             { refresh: refreshToken },
           );
           const newAccessToken = response.data.access;
@@ -107,7 +107,7 @@ axiosConfig.interceptors.response.use(
           // Handle token refresh failure
           Cookies.remove("token");
           Cookies.remove("refreshToken");
-          window.location.href = "/"; // Redirect to login on failure
+          window.location.reload(); // Redirect to login on failure
         }
       }
     }

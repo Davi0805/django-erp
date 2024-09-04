@@ -1,8 +1,9 @@
-FROM owasp/modsecurity-crs:nginx-alpine
+FROM nginx:alpine
 
 RUN chown -R nginx:nginx /etc/nginx
-
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY modsecurity.conf /etc/nginx/modsecurity.conf
+RUN rm /etc/nginx/conf.d/default.conf 
+COPY nginx.conf /etc/nginx/conf.d
+#COPY ./conf.d/default.conf /etc/nginx/default.conf
+#COPY modsecurity.conf /etc/nginx/modsecurity.conf
 
 CMD ["nginx", "-g", "daemon off;"]

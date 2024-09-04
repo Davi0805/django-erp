@@ -13,7 +13,7 @@ import HttpsIcon from "@mui/icons-material/Https";
 import { useNavigate } from "react-router-dom";
 import axiosConfig from "../../axiosConfig";
 import { useState } from "react";
-import { setToken } from "../../Components/Services/utils";
+import { setRefreshToken, setToken } from "../../Components/Services/utils";
 
 export const LoginSignup = () => {
   const theme = useTheme();
@@ -32,9 +32,10 @@ export const LoginSignup = () => {
       // Armazena o token de acesso no localStorage
       /* localStorage.setItem("accessToken", access);
       localStorage.setItem("refreshToken", refresh); */
-
+      console.log(response.data)
       console.log("Token JWT do Vault:", access);
       setToken(access);
+      setRefreshToken(response.data.refresh);
 
       // Redirecionar após login bem-sucedido
       navigate("/dashboard");
@@ -62,7 +63,7 @@ export const LoginSignup = () => {
             sx={{ borderRadius: "10px" }}
             margin="35px 25px"
             alignItems="center"
-            color={colors.grey[100]}
+            color={colors.grey[200]}
           >
             Login
           </Typography>
@@ -111,7 +112,8 @@ export const LoginSignup = () => {
             type="submit"
             variant="contained"
             size="large"
-            sx={{ color: colors.greenAccent[500] }}
+            sx={{ backgroundColor: colors.blueAccent[500],
+              color: colors.grey[200] }}
           >
             Logar
           </Button>

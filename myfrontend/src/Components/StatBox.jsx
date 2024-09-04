@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, CircularProgress, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import ProgressCircle from "./ProgressCircle";
 
@@ -13,7 +13,7 @@ const StatBox = ({
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  console.log("data received " + progress);
   return (
     <Box width="100%" m="0 30px">
       <Box display="flex" justifyContent="space-between">
@@ -28,10 +28,12 @@ const StatBox = ({
           </Typography>
         </Box>
         <Box>
-          <ProgressCircle
+{/*           <ProgressCircle
             progress={progress}
             colorprogress={`${colorprogressstat}`}
-          />
+          /> */}
+          <CircularProgress variant="determinate" sx={{color: colors.blueAccent[500],
+          }} value={progress} />
         </Box>
       </Box>
       <Box display="flex" justifyContent="space-between" mt="2px">

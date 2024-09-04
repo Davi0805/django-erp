@@ -68,7 +68,7 @@ export default function PaginaPedidos() {
               )
             }
             sx={{
-              backgroundColor: colors.blueAccent[700],
+              backgroundColor: colors.blueAccent[400],
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",

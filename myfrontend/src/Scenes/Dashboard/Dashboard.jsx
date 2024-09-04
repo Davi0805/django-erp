@@ -69,6 +69,7 @@ const Dashboard = () => {
         const data = response.data;
         if (data.results && typeof data.results === "object") {
           setStats(data.results);
+          console.log("dashboard stat:", data.results);
         } else {
           console.error("Unexpected data structure:", data);
         }
@@ -158,9 +159,9 @@ const Dashboard = () => {
                 sx={{ color: colors.blueAccent[400] }}
               />
             }
-            progress={`${((stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count) / 100) * stats.option_t_count}%`}
-            colorprogressstat={colors.blueAccent[400]}
-            textcolor={colors.blueAccent[400]}
+            progress={`${(stats.option_t_count / (stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count)) * 100}`}
+/*             colorprogressstat={colors.blueAccent[400]} */
+            textcolor={colors.blueAccent[400]} 
           />
         </Box>
         <Box
@@ -179,7 +180,7 @@ const Dashboard = () => {
             title={`${stats.option_b_count} / ${stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count}`}
             subtitle="Cargas bloqueadas"
             icon={<BlockIcon sx={{ color: colors.blueAccent[400] }} />}
-            progress={`${((stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count) / 100) * stats.option_b_count}%`}
+            progress={`${(stats.option_b_count / (stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count)) * 100}`}
             colorprogressstat={colors.redAccent[500]}
             textcolor={colors.blueAccent[400]}
           />
@@ -199,7 +200,7 @@ const Dashboard = () => {
             title={`${stats.option_l_count} / ${stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count}`}
             subtitle="Cargas liberadas"
             icon={<LocalShippingIcon sx={{ color: colors.blueAccent[400] }} />}
-            progress={`${((stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count) / 100) * stats.option_l_count}%`}
+            progress={`${(stats.option_l_count / (stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count)) * 100}`}
             colorprogressstat={colors.blueAccent[400]}
             textcolor={colors.blueAccent[400]}
           />
@@ -220,7 +221,7 @@ const Dashboard = () => {
             title={`${stats.option_p_count} / ${stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count}`}
             subtitle="Cargas aguardando documentação"
             icon={<DescriptionIcon sx={{ color: colors.blueAccent[400] }} />}
-            progress={`${((stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count) / 100) * stats.option_p_count}%`}
+            progress={`${(stats.option_p_count / (stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count)) * 100}`}
             colorprogressstat={colors.blueAccent[400]}
             textcolor={colors.blueAccent[400]}
           />

@@ -102,7 +102,7 @@ export default function Detalhes() {
         Id: {data.referenciaid}
       </Typography>
       <Typography variant="h5" color={colors.grey[200]}>
-        Data: {data.created_at}
+        Data: {data.created_at ? `${data.created_at.substring(8, 10)} / ${data.created_at.substring(5, 7)} / ${data.created_at.substring(0, 4)}` : 'N/A'}
       </Typography>
       <Box display="flex" justifyContent="flex-end" alignItems="center">
          <Button

@@ -29,6 +29,7 @@ import { Snackbar } from '@mui/material';
 import { Alert } from '@mui/material';
 import { useQueryClient } from "@tanstack/react-query";
 import axiosConfig from "../axiosConfig";
+import { useNavigate } from "react-router-dom";
 
 const apiUrl = "http://127.0.0.1:8000/contractor/";
 
@@ -37,6 +38,7 @@ const NovaCargapopup = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [open, openchange] = useState(false);
+  const redirecionar = useNavigate();
   // OPCOES FORMULARIO
   const [options, setOptions] = useState([]);
   const [coptions, setCoptions] = useState([]);
@@ -138,29 +140,26 @@ const NovaCargapopup = () => {
           onSubmit: async (event) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
-           /*  const formJson = Object.fromEntries(formData.entries());
-            formData.append('data', JSON.stringify(formJson)); //CHECAR ANTES DE PRODUCAO */
-            
-
+            const formJson = Object.fromEntries(formData.entries());
+            formData.append('data', JSON.stringify(formJson));
+            console.log(formData); //CHECAR ANTES DE PRODUCAO
             try {
-
-              axiosConfig.post('/cargasinfo/', formData, {
+              const response = await axiosConfig.post('/cargasinfo/', formData, {
                 headers: {
                   'Content-Type': 'multipart/form-data',
                 },
-              })
-                .then((response) => {
-                  console.log(response);
-                })
-                .catch((error) => {
-                  console.error(error);
-                });
+              });
+              console.log(response);
+              setAlertmessage("Nova carga adicionada!");
+              setOpenAlert(true);
               funcclosechange();
               handleFileChange(); // Close the dialog if the request was successful
               queryClient.invalidateQueries('cargasinfo');
-              window.location.reload();
+              redirecionar(0);
             } catch (error) {
-              console.error("Error:", error);
+              console.error(error);
+              setAlertmessage("Erro ao registrar nova carga");
+              setOpenAlert(true);
             }
           },
         }}
