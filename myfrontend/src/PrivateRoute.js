@@ -1,54 +1,21 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import axiosConfig from "./axiosConfig";
+import { Outlet, Navigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from './authContext';
 import Cookies from 'js-cookie'
 
-const PrivateRoute = () => {
-  const isAuthenticated = !!Cookies.get("token");
+export const PrivateRoute = () => {
+    /* const { cookies } = useAuth(); */
+    const { isAuthenticated, loading, cookies } = useContext(AuthContext);
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
-};
-export default PrivateRoute;
-
-/* const PrivateRoute = () => {
-
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-
-  const [loading, setLoading] = React.useState(true);
-
-
-  React.useEffect(() => {
-
-    axiosConfig.get('api/isauthenticated')
-
-      .then(response => {
-
-        setIsAuthenticated(response.data.authenticated);
-
-        setLoading(false);
-
-      })
-
-      .catch(error => {
-
-        setLoading(false);
-
-      });
-
-  }, []);
-
-
-  if (loading) {
-
-    return <div>Carregando...</div>;
-
+    const storedisAuthenticated = !!Cookies.get('token');
+    console.log("Private Route: ", storedisAuthenticated);
+    if (loading) {
+      // While loading, display a spinner or some placeholder content
+      return <div>Loading...</div>;
   }
+  console.log(!!Cookies.get('token'));
 
-
-  return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
-
+    return storedisAuthenticated ? <Outlet/> : <Navigate to='/' exact />
 };
 
-
 export default PrivateRoute;
- */

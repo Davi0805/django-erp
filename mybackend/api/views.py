@@ -359,7 +359,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
             secure=True,
 
-            httponly=True,
+            httponly=False,
 
             samesite='strict',
 

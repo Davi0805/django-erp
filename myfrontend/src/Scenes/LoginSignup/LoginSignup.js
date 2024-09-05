@@ -1,46 +1,27 @@
-// LoginSignup.js
-
-import React from "react";
-import "./LoginSignup.css";
-import { useTheme, Box, Typography, Button } from "@mui/material";
+import React, { useContext } from "react";
+import { useTheme, Box, Typography, Button, FormControl, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
 import { tokens } from "../../theme";
-import FormControl from "@mui/material/FormControl";
-import InputAdornment from "@mui/material/InputAdornment";
-import InputLabel from "@mui/material/InputLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import HttpsIcon from "@mui/icons-material/Https";
 import { useNavigate } from "react-router-dom";
 import axiosConfig from "../../axiosConfig";
-import { useState } from "react";
-import { setRefreshToken, setToken } from "../../Components/Services/utils";
+import { AuthContext } from "../../authContext";
 
 export const LoginSignup = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
     try {
-      // Autenticação e obtenção de tokens do backend
-      const response = await axiosConfig.post("api/token/", formJson); // Endpoint para obtenção de tokens
-      const { access, refresh } = response.data;
-
-      // Armazena o token de acesso no localStorage
-      /* localStorage.setItem("accessToken", access);
-      localStorage.setItem("refreshToken", refresh); */
-      console.log(response.data)
-      console.log("Token JWT do Vault:", access);
-      setToken(access);
-      setRefreshToken(response.data.refresh);
-
-      // Redirecionar após login bem-sucedido
-      navigate("/dashboard");
+      await login(formJson); // Ensure login function is properly called
+      navigate("/dashboard"); // Adjust path if necessary
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Login error:", error);
     }
   };
 
@@ -79,9 +60,7 @@ export const LoginSignup = () => {
                   placeholder="Usuário"
                   startAdornment={
                     <InputAdornment position="start">
-                      <AccountCircleIcon
-                        sx={{ color: colors.blueAccent[500] }}
-                      />
+                      <AccountCircleIcon sx={{ color: colors.blueAccent[500] }} />
                     </InputAdornment>
                   }
                   label="Usuário"
@@ -112,8 +91,7 @@ export const LoginSignup = () => {
             type="submit"
             variant="contained"
             size="large"
-            sx={{ backgroundColor: colors.blueAccent[500],
-              color: colors.grey[200] }}
+            sx={{ backgroundColor: colors.blueAccent[500], color: colors.grey[200] }}
           >
             Logar
           </Button>

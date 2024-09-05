@@ -155,7 +155,6 @@ const NovaCargapopup = () => {
               funcclosechange();
               handleFileChange(); // Close the dialog if the request was successful
               queryClient.invalidateQueries('cargasinfo');
-              redirecionar(0);
             } catch (error) {
               console.error(error);
               setAlertmessage("Erro ao registrar nova carga");

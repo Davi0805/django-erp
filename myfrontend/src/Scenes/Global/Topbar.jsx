@@ -9,16 +9,25 @@ import PersonOutlined from "@mui/icons-material/PersonOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import axiosConfig from "../../axiosConfig";
 import { Menu } from "@mui/material";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
+import { AuthContext } from "../../authContext";
+import { useEffect } from "react";
 
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const { isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [companyselect, setCompanyselect] = useState(null)
-  /* const isAuthenticated = !!localStorage.getItem("accessToken"); */
-  const isAuthenticated = !!Cookies.get("token");
+  const [companyselect, setCompanyselect] = useState(null);
+  const [token, setToken] = useState(null); // State to store the token from cookies
+
+  useEffect(() => {
+    // Check for the token in cookies when the component mounts
+    const cookieToken = Cookies.get('token');
+    setToken(cookieToken);
+    console.log("Topbar - token from cookies:", cookieToken);
+  }, []);
 
   const handleColorModeChange = () => {
     colorMode.toggleColorMode();
@@ -26,8 +35,7 @@ const Topbar = () => {
   };
 
   const handleLogout = () => {
-    Cookies.remove("token");
-    Cookies.remove("refreshtoken")
+    logout();
     navigate("/");
   };
 
@@ -48,7 +56,7 @@ const Topbar = () => {
     setCompanyselect(null);
   }
 
-  return isAuthenticated ? (
+  return !!Cookies.get('token') ? (
     <Box
       display="flex"
       justifyContent="space-between"

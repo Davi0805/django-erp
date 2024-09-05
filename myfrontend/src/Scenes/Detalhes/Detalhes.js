@@ -31,18 +31,52 @@ export default function Detalhes() {
   const [data, setData] = useState([]);
 
 
-  console.log(params)
+/*   console.log(params)
+
+  useEffect(() => {
+
+    setId(params.id);
+    console.log()
+
+  }, [params]);
+ */
+  const id = params.id;
+  console.log(id);
 
 
   useEffect(() => {
-    console.log('Fetching data for ID:', params.id); // Debug log
-    axiosConfig.get(`http://127.0.0.1:8000/cargasinfo/${params.id}`)
-      .then(response => {
-        console.log('Fetched data:', response.data); // Log fetched data
-        setData(response.data);
-      })
-      .catch(error => console.error('Fetch error:', error));
-  }, [params.id]); // Consider dependency on params.id if it should trigger refetch
+
+    if (params.id) {
+
+      console.log('Updated id:', id);
+
+      const fetchData = async () => {
+
+        try {
+
+          const url = "cargasinfo/" + params.id + "/";
+
+          console.log(url);
+
+          const response = await axiosConfig.get(url);
+
+          console.log(response.data);
+
+          setData(response.data);
+
+        } catch (error) {
+
+          console.error('Error fetching data:', error);
+
+        }
+
+      };
+
+      fetchData();
+
+    }
+
+  }, [params.id]);// Consider dependency on params.id if it should trigger refetch
 
   return (
     <Box m="20px">
@@ -64,7 +98,7 @@ export default function Detalhes() {
           sx={{ gap: "20px" }}
         >
           <UpdateCargapopup requestData={data} params={params} />
-          <DeleteButton endpoint={`http://127.0.0.1:8000/cargasinfo/${params.id}`} />
+          <DeleteButton endpoint={"cargasinfo/" + params.id + "/"} />
            {/* <Button
             sx={{
               backgroundColor: colors.redAccent[700],

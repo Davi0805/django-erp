@@ -115,7 +115,12 @@ const Pedidos = ({ margin, altura, largura }) => {
               backgroundColor: colors.blueAccent[500],
             }}
             component={Link}
-            to={`/dashboard/detalhes/${params.row.id}`}
+            /* to={`/dashboard/detalhes/${params.row.id}`} */
+            to={{
+              pathname: `/dashboard/detalhes/${params.row.id}`,
+              state: { id: params.row.id },
+          
+            }}
             size="small"
             startIcon={<AddIcon />}
           >

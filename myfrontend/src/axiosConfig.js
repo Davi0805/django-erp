@@ -57,20 +57,28 @@ export default axiosConfig;
 import axios from "axios";
 import Cookies from 'js-cookie';
 
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+};
+
+
+
 const axiosConfig = axios.create({
-  baseURL: "http://127.0.0.1:8000/",
+  baseURL: "http://127.0.0.1:8080/api/",
   headers: {
     "Content-Type": "application/json",
-  },
-  /* withCredentials: true, */
+  }
 });
 
 axiosConfig.interceptors.request.use(
   (config) => {
-    const accessToken = Cookies.get("token");
+    /* Cookies.set('token', "Opa"); */
+    const accessToken = Cookies.get('token');
+    console.log("AXIOS: ", accessToken)
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-      /* config.headers.Cookie = `token=${accessToken}`; */
     }
     return config;
   },
@@ -79,7 +87,9 @@ axiosConfig.interceptors.request.use(
   },
 );
 
-axiosConfig.interceptors.response.use(
+axiosConfig.defaults.withCredentials = true;
+
+/* axiosConfig.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -87,7 +97,7 @@ axiosConfig.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      const refreshToken = Cookies.get("refreshToken");
+      const refreshToken = Cookies.get('refresh');
       if (refreshToken) {
         try {
           const response = await axios.post(
@@ -95,24 +105,18 @@ axiosConfig.interceptors.response.use(
             { refresh: refreshToken },
           );
           const newAccessToken = response.data.access;
-          Cookies.set("token", newAccessToken, {
-            expires: 1, // expira em 1 dia
-            path: '/',
-            secure: true,
-            sameSite: 'strict',
-          });
+          Cookies.set('token', newAccessToken);
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return axios(originalRequest);
         } catch (error) {
           // Handle token refresh failure
-          Cookies.remove("token");
-          Cookies.remove("refreshToken");
-          window.location.reload(); // Redirect to login on failure
+          Cookies.remove('token');
+          Cookies.remove('token');
         }
       }
     }
     return Promise.reject(error);
   },
-);
+); */
 
 export default axiosConfig;

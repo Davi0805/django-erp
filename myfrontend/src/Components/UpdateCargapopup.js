@@ -192,12 +192,12 @@ import {
               if (blfilename !== requestData.blfile) formData.append('blfile', event.target.blfile.files[0]);
               if (packlistfile !== requestData.packinglist) formData.append('packinglist', event.target.packinglist.files[0]);
               if (afrmmfile !== requestData.afrmmfile) formData.append('afrmmfile', event.target.afrmmfile.files[0]); */
-                    const formJson = Object.fromEntries(formData.entries());
+              const formJson = Object.fromEntries(formData.entries());
               formData.append('data', JSON.stringify(formJson)); //CHECAR ANTES DE PRODUCAO
               try {
                 // Use axiosConfig for the PUT request
                 const response = await axiosConfig.patch(
-                  `http://127.0.0.1:8000/cargasinfo/${params.id}/`,
+                  "cargasinfo/" + params.id + "/",
                   formData
                 );
         

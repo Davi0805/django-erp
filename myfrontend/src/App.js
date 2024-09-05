@@ -4,6 +4,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import { AuthProvider } from "./authContext"; 
 /* import Topbar from "./Scenes/Global/Topbar";
 import Dashboard from "./Scenes/Dashboard/Dashboard";
 import { LoginSignup } from "./Scenes/LoginSignup/LoginSignup";
@@ -32,6 +33,7 @@ function App() {
           <Router>
             <main className="content">
               <Suspense fallback={<LinearProgress color="inherit" />}>
+              <AuthProvider>
               <QueryClientProvider client={queryClient}>
               <Topbar />
               <Routes>
@@ -47,6 +49,7 @@ function App() {
                 </Route>
               </Routes>
               </QueryClientProvider>
+              </AuthProvider>
               </Suspense>
             </main>
           </Router>
